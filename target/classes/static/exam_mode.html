@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEET Biology - Exam Instructions</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            color: #2d3436;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #636e72;
+        }
+
+        .instructions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .instruction-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #00b894;
+        }
+
+        .instruction-card i {
+            color: #00b894;
+            margin-bottom: 10px;
+        }
+
+        .instruction-card h3 {
+            font-size: 1.1em;
+            margin-bottom: 8px;
+            color: #2d3436;
+        }
+
+        .paper-distribution {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .paper-distribution h2 {
+            color: #2d3436;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            text-align: center;
+        }
+
+        .exam-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .detail-item {
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .detail-item h4 {
+            color: #00b894;
+            margin-bottom: 5px;
+        }
+
+        .important-note {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 30px 0;
+        }
+
+        .continue-btn {
+            display: block;
+            width: 200px;
+            margin: 30px auto;
+            padding: 12px 0;
+            background: #00b894;
+            color: white;
+            text-align: center;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background 0.3s ease;
+        }
+
+        .continue-btn:hover {
+            background: #00a383;
+        }
+
+        footer {
+            text-align: center;
+            color: #636e72;
+            margin-top: 30px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>NEET Biology Exam Instructions</h1>
+            <p>Please read all instructions carefully before proceeding</p>
+        </div>
+
+        <div class="instructions-grid">
+            <div class="instruction-card">
+                <i class="fas fa-clock"></i>
+                <h3>Time Management</h3>
+                <p>90 minutes for 90 questions</p>
+            </div>
+
+            <div class="instruction-card">
+                <i class="fas fa-check-circle"></i>
+                <h3>Marking Scheme</h3>
+                <p>+1 for correct, -1 for incorrect</p>
+            </div>
+
+            <div class="instruction-card">
+                <i class="fas fa-ban"></i>
+                <h3>No Tab Switching</h3>
+                <p>Stay on this window throughout the exam</p>
+            </div>
+        </div>
+
+        <div class="paper-distribution">
+            <h2>Exam Overview</h2>
+            <div class="exam-details">
+                <div class="detail-item">
+                    <h4>Total Questions</h4>
+                    <p>90</p>
+                </div>
+                <div class="detail-item">
+                    <h4>Total Marks</h4>
+                    <p>90</p>
+                </div>
+                <div class="detail-item">
+                    <h4>Time Duration</h4>
+                    <p>90 Minutes</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="important-note">
+            <h3><i class="fas fa-exclamation-triangle"></i> Important</h3>
+            <p>Switching tabs or using other applications will lead to automatic submission.</p>
+        </div>
+
+        <a href="#" class="continue-btn" onclick="window.location.href = 'exam_quiz.html'">Start Exam</a>
+
+        <footer>
+            <p>&copy; 2024 NEET Examination Portal</p>
+        </footer>
+    </div>
+</body>
+</html>

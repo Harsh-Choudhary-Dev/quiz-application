@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEET Biology Quiz</title>
+    <link rel="stylesheet" href="css/exam_quizStyle.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="quiz-header">
+            <h1>NEET Biology</h1>
+            <div class="timer">Time Left: <span id="timer">89:59</span></div>
+        </div>
+
+        <div class="question-area">
+            <div class="question" id="question"></div>
+            <div class="options" id="options"></div>
+
+            <div class="navigation">
+                <button class="nav-btn" id="prevBtn" disabled>Previous</button>
+                <button class="nav-btn" id="markBtn">Mark for Review</button>
+                <button class="nav-btn" id="nextBtn">Next</button>
+            </div>
+        </div>
+
+        <div class="question-palette">
+            <h3 class="palette-title">Question Palette</h3>
+            <div class="palette-grid" id="paletteGrid"></div>
+            <button class="submit-btn" id="submitBtn">Submit Test</button>
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #00b894;"></div>
+                    <span>Answered</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #ffd43b;"></div>
+                    <span>Marked for Review</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #f8f9fa;"></div>
+                    <span>Not Visited</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Spinner element -->
+        <div class="spinner" id="spinner" style="display: none;">
+            <div class="loader"></div>
+        </div>
+    </div>
+
+    <style>
+        /* Spinner styles */
+        .spinner {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000; /* Ensure it appears above other content */
+        }
+        .loader {
+            border: 8px solid transparent; /* Make the border transparent */
+            border-top: 8px solid #3498db; /* Blue */
+            border-radius: 50%;
+            width: 60px; /* Increased size */
+            height: 60px; /* Increased size */
+            animation: spin 1s linear infinite;
+            box-shadow: 0 0 10px rgba(52, 152, 219, 0.5); /* Add shadow for depth */
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+    
+    <script>
+        // Example of showing the spinner
+        function showSpinner() {
+            document.getElementById('spinner').style.display = 'block';
+        }
+
+        function hideSpinner() {
+            document.getElementById('spinner').style.display = 'none';
+        }
+    </script>
+
+    <script src="js/exam_quizScript.js"></script>
+</body>
+</html>

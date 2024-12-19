@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Chapter Selection</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+      
+    <style>
+        :root {
+            --primary: #7C3AED;
+            --primary-dark: #6D28D9;
+            --secondary: #EC4899;
+            --accent: #8B5CF6;
+            --success: #10B981;
+            --background: #F8FAFF;
+            --text: #1F2937;
+            --white: #ffffff;
+            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --hover-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            --border-radius: 16px;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--background);
+            color: var(--text);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        header {
+            background: var(--gradient);
+            padding: 3rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--hover-shadow);
+            border-bottom: 4px solid var(--primary-dark);
+        }
+
+        header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--white);
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1s ease-in-out; /* Fade-in animation */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .quiz-description {
+            max-width: 700px;
+            margin: 2rem auto;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            text-align: center;
+            transition: transform 0.3s ease;
+            backdrop-filter: blur(10px); /* Glassmorphism effect */
+        }
+
+        .quiz-description:hover {
+            transform: scale(1.05);
+        }
+
+        .quiz-chapters {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .chapter-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            border: 1px solid transparent; /* Border for hover effect */
+        }
+
+        .chapter-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--hover-shadow);
+            border-color: var(--primary); /* Change border color on hover */
+        }
+
+        .chapter-card h3 {
+            font-size: 1.5rem;
+            margin: 0 0 1rem 0;
+            color: var(--primary);
+            font-weight: 600; /* Bold font for headings */
+        }
+
+        .chapter-card p {
+            color: #666;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .chapter-btn {
+            background: var(--gradient);
+            color: var(--white);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chapter-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+        }
+
+        .chapter-btn:hover::before {
+            transform: translateX(100%);
+        }
+
+        .chapter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(124, 58, 237, 0.3);
+        }
+
+        footer {
+            background: var(--gradient);
+            padding: 1.5rem;
+            text-align: center;
+            color: var(--white);
+            margin-top: auto;
+            border-top: 4px solid var(--primary-dark);
+        }
+
+        @media (max-width: 768px) {
+            .quiz-chapters {
+                padding: 0 1rem;
+            }
+            
+            header h1 {
+                font-size: 2rem;
+            }
+        }
+
+        /* Add smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Add this CSS for the loading spinner overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000; /* Ensure it is above other content */
+            display: none; /* Initially hidden */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="loading-overlay">
+        <i class="fas fa-spinner fa-spin fa-3x"></i> <!-- Spinner icon -->
+    </div>
+
+    <main>
+        <div class="quiz-description">
+            <p>Welcome to the Quiz Application! Choose a chapter below to test your knowledge.</p>
+        </div>
+        <section class="quiz-chapters" id="quiz-chapters">
+            <!-- Chapter cards will be dynamically inserted here -->
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Quiz Application</p>
+    </footer>
+
+    <script>
+        // Show loading overlay before fetching data
+        document.querySelector('.loading-overlay').style.display = 'flex';
+
+        // Fetch chapter data from the API with an API key
+        fetch('/api/v1/chapters', {
+            headers: {
+                'x-api-key': 'neet_QdrUprUid6I7h7HTvdfOJHib0aSNOy7iUyLYYdFaPcc' // Replace with your actual API key
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            const chaptersContainer = document.getElementById('quiz-chapters');
+            data.forEach((chapter, index) => {
+                // Create a new chapter card
+                const chapterCard = document.createElement('div');
+                chapterCard.classList.add('chapter-card');
+
+                // Set the inner HTML of the chapter card
+                chapterCard.innerHTML = `
+                    <div class="chapter-number">${chapter.id.toString().padStart(2, '0')}</div>
+                    <i class="fas fa-book-open chapter-icon"></i>
+                    <h3>${chapter.ch_name.replace(/^./, char => char.toUpperCase())}</h3>
+                    <p>Overview: ${chapter.ch_id}</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="--progress: ${Math.random() * 100}%"></div>
+                    </div>
+                    <button class="chapter-btn" data-chapter="${chapter.ch_id}">
+                        <span>Start Quiz</span>
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                `;
+
+                // Add entrance animation
+                chapterCard.style.animation = `fadeInUp 0.5s ease forwards ${index * 0.1}s`;
+
+                // Append the chapter card to the container
+                chaptersContainer.appendChild(chapterCard);
+            });
+
+            // Hide loading overlay after loading chapters
+            document.querySelector('.loading-overlay').style.display = 'none';
+
+            // Add event listeners to the dynamically created buttons
+            const buttons = document.querySelectorAll('.chapter-btn');
+            buttons.forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const chapterName = event.currentTarget.getAttribute('data-chapter');
+                    localStorage.setItem('quizConfiq', JSON.stringify([{chapter_id: chapterName, question_number: "50"}]));
+                    console.log(`Stored in session: ${chapterName}`);
+                    window.location.href = 'final_quiz_interface.html';
+                });
+            });
+
+            // Add loading animation handling
+            window.addEventListener('load', () => {
+                document.querySelector('.loading-overlay').classList.add('hidden');
+            });
+
+            // Add keyframe animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fadeInUp {
+                    from {
+                        opacity: 0;
+                        transform: translateY(20px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+            document.getElementsByClassName("container")[0].style.display = "none"
+        })
+        .catch(error => {
+            console.error('Error fetching chapters:', error);
+            // Hide loading overlay in case of error
+            document.querySelector('.loading-overlay').style.display = 'none';
+        });
+    </script>
+</body>
+</html>

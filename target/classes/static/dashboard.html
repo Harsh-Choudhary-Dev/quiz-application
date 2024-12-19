@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Performance Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/dashboardStyle.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="header">
+            <div class="header-content">
+                <div class="welcome-text">
+                    <span class="greeting">Welcome back,</span>
+                    <h1 id="student_name">Harsh</h1>
+                    <p>Track your learning journey and achievements</p>
+                </div>
+                <button class="start-quiz-btn" onclick="openNewQuizModal()">
+                    <div class="button-content">
+                        <i class="fas fa-play-circle"></i>
+                        <span>Start New Quiz</span> <br>
+                    </div>
+                    <div class="button-badge">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                </button>
+            </div>
+            <div class="home-button-container" style="position: absolute; top: 1rem; right: 0.5rem; z-index: 10; text-align: center; margin: 0;">
+                <button class="home-btn" onclick="icon_click('home')" style="background: none; border: none; padding:0;">
+                    <i class="fas fa-home bouncing" style="font-size: 1.5rem; color: white;"></i>
+                </button>
+            </div>
+            <div class="home-button-container" style="position: absolute; top: 1rem; right: 6.5rem; z-index: 10; text-align: center; margin: 0;">
+                <button class="home-btn" onclick="icon_click('logout')" style="background: none; border: none; padding: 0;">
+                    <i class="fas fa-sign-out-alt bouncing1" style="font-size: 1.5rem; color: white;"></i>
+                </button>
+            </div>
+            <div class="animated-background">
+                <div class="circle circle-1"></div>
+                <div class="circle circle-2"></div>
+                <div class="circle circle-3"></div>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <i class="fas fa-trophy" style="color: var(--primary);"></i>
+                <h3>Overall Score</h3>
+                <div class="stat-value"></div>
+                <!-- <p>Top 10% of all users</p> -->
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-check-circle" style="color: var(--success);"></i>
+                <h3>Quizzes Completed</h3>
+                <div class="stat-value"></div>
+                <!-- <p>Last 30 days</p> -->
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-clock" style="color: var(--secondary);"></i>
+                <h3>Avg. Time per Quiz</h3>
+                <div class="stat-value"></div>
+                <p>Getting faster!</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-list-alt" style="color: var(--accent);"></i>
+                <h3>Total Questions Attempted</h3>
+                <div class="stat-value"></div>
+                <p>Questions Answered</p>
+            </div>
+        </div>
+
+        <div class="dashboard-sections" style="display: none;">
+            <div class="daily-targets">
+                <div class="targets-header">
+                    <h3>Daily Targets</h3>
+                    <button class="view-targets-btn" onclick="openTargetsModal()">
+                        <i class="fas fa-tasks"></i>
+                        View All Targets
+                    </button>
+                </div>
+                <div class="progress-stats">
+                    <div class="progress-item">
+                        <div class="progress-info">
+                            <span>Daily Progress</span>
+                            <span>60%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress" style="width: 60%"></div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <div class="progress-info">
+                            <span>Tasks Completed</span>
+                            <span>3/5</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress" style="width: 75%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-of-day">
+                <div class="question-header">
+                    <h3>Question of the Day</h3>
+                    <button class="view-question-btn" onclick="openQuestionModal()">
+                        <i class="fas fa-question-circle"></i>
+                        View Question
+                    </button>
+                </div>
+                <div class="progress-stats">
+                    <div class="progress-item">
+                        <div class="progress-info">
+                            <span>Completion Rate</span>
+                            <span>85%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress success" style="width: 85%"></div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <div class="progress-info">
+                            <span>Time Remaining</span>
+                            <span>4h left</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress warning" style="width: 40%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="charts-grid">
+            <div class="chart-container performance-chart">
+                <h3>Performance Trend</h3>
+                <canvas id="performanceChart"></canvas>
+            </div>
+            <div class="chart-container topics-chart">
+                <h3>Topic Breakdown (Toady's Quiz)</h3>
+                <canvas id="topicsChart"></canvas>
+            </div>
+            <div class="chart-container time-chart">
+                <h3>Time Distribution (in seconds)</h3>
+                <canvas id="timeChart"></canvas>
+            </div>
+            <div class="chart-container accuracy-chart">
+                <h3>Accuracy Rate (Toady's Quiz)</h3>
+                <canvas id="accuracyChart"></canvas>
+            </div>
+        </div>
+
+        <div class="recent-quizzes" style="position: relative;">
+            <h3>Recent Quizzes</h3>
+        </div>
+    </div>
+
+    <div id="targetsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Daily Learning Targets</h2>
+                <button class="close-btn" onclick="closeTargetsModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="targets-list">
+                <div class="target-item">
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="target1">
+                        <label for="target1">Complete JavaScript Arrays Exercise</label>
+                    </div>
+                    <span class="points">+50 XP</span>
+                </div>
+                <div class="target-item">
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="target2">
+                        <label for="target2">Watch React Hooks Tutorial</label>
+                    </div>
+                    <span class="points">+30 XP</span>
+                </div>
+                <div class="target-item">
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="target3">
+                        <label for="target3">Solve 3 Algorithm Challenges</label>
+                    </div>
+                    <span class="points">+75 XP</span>
+                </div>
+                <div class="target-item">
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="target4">
+                        <label for="target4">Complete CSS Grid Practice</label>
+                    </div>
+                    <span class="points">+45 XP</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="newQuizModal" class="modal">
+        <div class="modal-content quiz-selection-modal">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <h2>Start New Quiz</h2>
+                    <p class="modal-subtitle">Choose your quiz type to begin</p>
+                </div>
+                <button class="close-btn" onclick="closeNewQuizModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="quiz-options">
+                <div class="quiz-option" style="transition: transform 0.2s; border-radius: 12px; border: 1px solid var(--border); padding: 1rem; margin-bottom: 1rem; cursor: pointer;">
+                    <div class="quiz-option-icon">
+                        <i class="fas fa-random"></i>
+                    </div>
+                    <div class="quiz-option-content">
+                        <h3>Random Quiz</h3>
+                        <p>Mixed questions from all topics to test your overall knowledge</p>
+                        <button class="start-btn" onclick="startQuiz('random-mix')" style="background: var(--primary); color: white; border: none; border-radius: 8px; padding: 0.5rem 1rem; cursor: pointer;">
+                            <span>Start Now</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="quiz-option" style="transition: transform 0.2s; border-radius: 12px; border: 1px solid var(--border); padding: 1rem; margin-bottom: 1rem; cursor: pointer;">
+                    <div class="quiz-option-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="quiz-option-content">
+                        <h3>Topic Focus</h3>
+                        <p>Concentrate on a specific subject to master your understanding</p>
+                        <button class="start-btn" onclick="startQuiz('custom-topic')" style="background: var(--primary); color: white; border: none; border-radius: 8px; padding: 0.5rem 1rem; cursor: pointer;">
+                            <span>Choose Topic</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="quiz-option" style="transition: transform 0.2s; border-radius: 12px; border: 1px solid var(--border); padding: 1rem; margin-bottom: 1rem; cursor: pointer;">
+                    <div class="quiz-option-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="quiz-option-content">
+                        <h3>Performance based Quiz</h3>
+                        <p>Creates personalized quizzes from different chapters, tailored to your strengths and weaknesses based on previous accuracy scores.</p>
+                        <button class="start-btn" onclick="startQuiz('performance-based')" style="background: var(--primary); color: white; border: none; border-radius: 8px; padding: 0.5rem 1rem; cursor: pointer;">
+                            <span>Start Challenge</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="quiz-option" style="transition: transform 0.2s; border-radius: 12px; border: 1px solid var(--border); padding: 1rem; margin-bottom: 1rem; cursor: pointer;">
+                    <div class="quiz-option-icon">
+                        <i class="fas fa-th-list"></i>
+                    </div>
+                    <div class="quiz-option-content">
+                        <h3>Custom Mix Quiz</h3>
+                        <p>Create a personalized test by selecting a mix of questions from your chosen chapters.</p>
+                        <button class="start-btn" onclick="startQuiz('custom-mix')" style="background: var(--primary); color: white; border: none; border-radius: 8px; padding: 0.5rem 1rem; cursor: pointer;">
+                            <span>Start Challenge</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="quiz-option" style="transition: transform 0.2s; border-radius: 12px; border: 1px solid var(--border); padding: 1rem; margin-bottom: 1rem; cursor: pointer;">
+                    <div class="quiz-option-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="quiz-option-content">
+                        <h3>Exam Mode</h3>
+                        <p>Full-length assessment to simulate real exam conditions</p>
+                        <button class="start-btn" onclick="startQuiz('exam-mode')" style="background: var(--primary); color: white; border: none; border-radius: 8px; padding: 0.5rem 1rem; cursor: pointer;">
+                            <span>Begin Test</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="questionModal" class="modal">
+        <div class="modal-content question-modal">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <span class="question-badge">Question of the Day</span>
+                    <!-- <h2>JavaScript Challenge</h2> -->
+                </div>
+                <button class="close-btn" onclick="closeQuestionModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="question-modal-body">
+                <div class="question-info">
+                    <div class="info-tags">
+                        <!-- <span class="tag difficulty"><i class="fas fa-signal"></i> Medium</span> -->
+                        <!-- <span class="tag category"><i class="fas fa-code"></i> JavaScript</span> -->
+                        <!-- <span class="tag time"><i class="fas fa-clock"></i> 5 mins</span> -->
+                    </div>
+                </div>
+                <div class="question-text">
+                    <p>What will be the output of the following code?</p>
+                    
+                </div>
+                <div class="options-container">
+                    <div class="option-item">
+                        <input type="radio" name="answer" id="option1">
+                        <label for="option1">
+                            <span class="option-marker">A</span>
+                            <span class="option-text">TypeError: Assignment to constant variable</span>
+                        </label>
+                    </div>
+                    <div class="option-item">
+                        <input type="radio" name="answer" id="option2">
+                        <label for="option2">
+                            <span class="option-marker">B</span>
+                            <span class="option-text">[5, 6, 7]</span>
+                        </label>
+                    </div>
+                    <div class="option-item">
+                        <input type="radio" name="answer" id="option3">
+                        <label for="option3">
+                            <span class="option-marker">C</span>
+                            <span class="option-text">[1, 2, 3, 4]</span>
+                        </label>
+                    </div>
+                    <div class="option-item">
+                        <input type="radio" name="answer" id="option3">
+                        <label for="option3">
+                            <span class="option-marker">D</span>
+                            <span class="option-text">[1, 2, 3, 4]</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="question-footer">
+                <!-- <div class="stats">
+                    <span><i class="fas fa-users"></i> 234 attempts</span>
+                    <span><i class="fas fa-check-circle"></i> 67% success</span>
+                </div> -->
+                <button class="submit-btn">
+                    <i class="fas fa-paper-plane"></i>
+                    Submit Answer
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feedback Button -->
+    <div class="feedback-btn-container">
+        <button class="feedback-btn" onclick="openFeedbackModal()">
+            <i class="fas fa-comments"></i>
+            <span>Feedback</span>
+        </button>
+    </div>
+
+    <!-- Feedback Modal -->
+    <div id="feedbackModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Share Your Feedback</h2>
+                <button class="close-btn" onclick="closeFeedbackModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="feedbackForm" class="feedback-form">
+                <div class="form-group">
+                    <label for="feedbackType">Type of Feedback</label>
+                    <select id="feedbackType" required>
+                        <option value="">Select type</option>
+                        <option value="suggestion">Suggestion</option>
+                        <option value="bug">Bug Report</option>
+                        <option value="question-error">Error in Question</option>
+                        <option value="answer-error">Error in Answer</option>
+                        <option value="Compliment">Compliment</option>
+
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="feedbackMessage">Your Message</label>
+                    <textarea id="feedbackMessage" rows="4" required placeholder="Tell us what you think..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="feedbackEmail">Your Email (optional)</label>
+                    <input type="email" id="feedbackEmail" placeholder="email@example.com">
+                </div>
+                <button type="submit" class="submit-feedback-btn">
+                    <i class="fas fa-paper-plane"></i>
+                    Send Feedback
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <footer class="dashboard-footer">
+        <div class="footer-content">
+            <div class="footer-left">
+                <h3>Quiz App</h3>
+                <p>Making learning fun and interactive</p>
+            </div>
+            <div class="footer-right">
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Quiz App. All rights reserved.</p>
+        </div>
+    </footer>
+<script src="js/dashboardScript.js"></script>
+</body>
+</html>

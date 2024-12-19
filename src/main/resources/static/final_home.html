@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEET Biology Quiz - Home</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Acme&family=Dosis:wght@200..800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1c1f24; /* Darker shade */
+            --secondary-color: #121417; /* Even darker shade for footer */
+            --accent-color: #3a4750; /* Muted blue-gray */
+            --background-color: #0b0c0f; /* Deep dark background */
+            --text-color: #e5e7eb; /* Light gray text */
+            --btn-color: #536878; /* Button color a bit darker */
+            --btn-hover-color: #4a5965; /* Darker hover for buttons */
+            --white: #ffffff;
+            --font-family: 'Acme', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        header {
+            background-color: var(--primary-color);
+            padding: 2rem;
+            text-align: center;
+        }
+
+        header h1 {
+            color: var(--white);
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            color: var(--text-color);
+            font-size: 1.2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--btn-color);
+            color: var(--white);
+            padding: 0.8rem 1.5rem;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: var(--btn-hover-color);
+        }
+
+        section {
+            margin-bottom: 3rem;
+        }
+
+        section h2 {
+            color: var(--white);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        section p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .about, .instructions, .why-quiz {
+            background-color: var(--accent-color);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+        }
+
+        footer {
+            background-color: var(--secondary-color);
+            padding: 1.5rem;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        footer p {
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.5rem;
+            }
+
+            section h2 {
+                font-size: 2rem;
+            }
+
+            section p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to the NEET Biology Quiz</h1>
+        <p>Test your knowledge and boost your preparation with our interactive quiz!</p>
+    </header>
+
+    <div class="container">
+        <section class="about">
+            <h2>About the Quiz</h2>
+            <p>The NEET Biology Quiz is designed to help students preparing for the National Eligibility cum Entrance Test (NEET). It covers various topics of biology to ensure you are fully equipped to handle the subject in the exam.</p>
+            <a href="chapter_list.html" class="btn">Start Quiz Now</a>
+        </section>
+
+        <section class="instructions">
+            <h2>Instructions</h2>
+            <p>1. Each quiz contains multiple-choice questions (MCQs). <br>2. You will get instant feedback after each question. <br>3. Your score will be displayed at the end of the quiz. <br>4. Make sure to read each question carefully before selecting an answer.</p>
+        </section>
+
+        <section class="why-quiz">
+            <h2>Why Take This Quiz?</h2>
+            <p>This quiz will help you: <br>- Assess your knowledge in NEET Biology. <br>- Identify areas where you need improvement. <br>- Gain confidence by practicing with real exam-like questions.</p>
+            <a href="chapter_list.html" class="btn">Take the Quiz Now</a>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 NEET Biology Quiz. All rights reserved.</p>
+    </footer>
+</body>
+</html>

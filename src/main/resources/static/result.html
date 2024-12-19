@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Quiz Result Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366F1;
+            --primary-dark: #4F46E5;
+            --primary-light: #EEF2FF;
+            --success: #10B981;
+            --success-light: #D1FAE5;
+            --warning: #F59E0B;
+            --warning-light: #FEF3C7;
+            --error: #EF4444;
+            --error-light: #FEE2E2;
+            --background: #F9FAFB;
+            --text: #111827;
+            --text-secondary: #6B7280;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #F9FAFB, #E5E7EB);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .dashboard {
+            max-width: 1100px;
+            width: 100%;
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #E5E7EB;
+        }
+
+        .header-content h1 {
+            color: var(--text);
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .header-content p {
+            color: var(--text-secondary);
+            font-size: 1.125rem;
+        }
+
+        .timer {
+            background: var(--primary-light);
+            padding: 12px 24px;
+            border-radius: 12px;
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .main-score {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 20px;
+            padding: 40px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .score-circle {
+            width: 160px;
+            height: 160px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            position: relative;
+        }
+        .chart-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+            flex: 1;
+            background: white;
+            border-radius: 20px;
+            padding: 32px;
+            margin-top: 40px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+        
+        #scoreBreakdownChart,
+        #topicBreakdownChart {
+            width: 100%;
+            height: auto;
+            max-height: 400px;
+        }
+
+        .score-circle::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 50%;
+            border: 8px solid rgba(255, 255, 255, 0.2);
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .stat-title {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .chart-header h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .feedback {
+            padding: 16px;
+            border-radius: 12px;
+            font-weight: 500;
+            text-align: center;
+            margin: 32px 0;
+        }
+
+        .feedback.success {
+            background: var(--success-light);
+            color: var(--success);
+        }
+
+        .feedback.warning {
+            background: var(--warning-light);
+            color: var(--warning);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 16px;
+            margin-top: 32px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: scale(1.05);
+        }
+
+        .btn-secondary {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: #E0E7FF;
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 1200px) {
+            .dashboard {
+                padding: 24px;
+                margin: 15px;
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header-content h1 {
+                font-size: 2rem;
+            }
+
+            .timer {
+                padding: 8px 16px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                padding: 16px;
+                margin: 10px;
+                border-radius: 16px;
+            }
+
+            header {
+                flex-direction: column;
+                gap: 16px;
+                align-items: flex-start;
+                margin-bottom: 24px;
+                padding-bottom: 16px;
+            }
+
+            .charts-wrapper {
+                flex-direction: column;
+            }
+
+            .chart-container {
+                min-width: 100%;
+                padding: 16px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .stat-card {
+                padding: 16px;
+            }
+
+            .stat-value {
+                font-size: 1.5rem;
+            }
+
+            .score-circle {
+                width: 100px;
+                height: 100px;
+                font-size: 1.75rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .dashboard {
+                padding: 12px;
+                margin: 8px;
+            }
+
+            .header-content h1 {
+                font-size: 1.5rem;
+            }
+
+            .header-content p {
+                font-size: 0.875rem;
+            }
+
+            .chart-container {
+                padding: 12px;
+            }
+        }
+
+        .charts-wrapper {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            flex-wrap: wrap;
+        }
+
+        .chart-container {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .charts-wrapper {
+                flex-direction: column;
+            }
+            
+            .chart-container {
+                width: 100%;
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <header>
+            <div class="header-content">
+                <h1>Quiz Results</h1>
+                <p>Great job completing the quiz!</p>
+            </div>
+            <div class="timer">
+                Time Taken: <span id="completionTime">12:30</span>
+            </div>
+        </header>
+
+        <div class="results-grid">
+            <div class="main-score">
+                <div class="score-circle">
+                    <span class="score">0%</span>
+                </div>
+                <h2 style="color: rgba(255,255,255,0.9); margin-bottom: 8px;">Quiz Performance</h2>
+                <p style="color: rgba(255,255,255,0.7)">You answered <strong class="correct-ans"></strong> questions correctly out of <strong class="total-ques"></strong>.</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-title">✅ Correct</div>
+                    <div class="stat-value correct-ans"></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">❌ Incorrect</div>
+                    <div class="stat-value wrong-ques"></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">📝 Total</div>
+                    <div class="stat-value total-ques"></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">⚡ Accuracy</div>
+                    <div class="stat-value accuracy">0%</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="charts-wrapper">
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h2>Performance Breakdown</h2>
+                </div>
+                <div style="position: relative; height: 300px;">
+                    <canvas id="scoreBreakdownChart"></canvas>
+                </div>
+            </div>
+            <!-- <div class="chart-container">
+                <div class="chart-header">
+                    <h2>Question Breakdown by Topic</h2>
+                </div>
+                <div style="position: relative; height: 300px;">
+                    <canvas id="topicBreakdownChart"></canvas>
+                </div>
+            </div> -->
+        </div>
+
+        <div class="feedback"></div>
+
+        <div class="action-buttons">
+            <a href="dashboard.html" class="btn btn-primary" onclick="localStorage.clear()">🔄 Dashboard</a>
+            <!-- <a href="#" class="btn btn-secondary">📋 Review Answers</a> -->
+            <a href="#" class="btn btn-secondary">📤 Share Results</a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const scoreBreakdownCtx = document.getElementById('scoreBreakdownChart').getContext('2d');
+        const correct_ans_ele = document.querySelectorAll(".correct-ans");
+        const total_ques_ele = document.querySelectorAll(".total-ques");
+        //const score = sessionStorage.getItem('score') || 0;  // Default for demo
+        //const total_questions = sessionStorage.getItem('total_questions') || 0;  // Default for demo
+        const feedback = document.querySelector(".feedback");
+        //const completionTime = document.getElementById("completionTime").innerText = Math.round(sessionStorage.getItem("totalTime")) + " seconds"
+        //const wrong_ans = total_questions - score;
+        const message = [
+            "Keep practicing! You're making progress. Focus on the topics you found challenging and you'll improve!",
+            "Outstanding performance! Your hard work and preparation really showed in these results! 🌟"
+        ];
+
+        function displayScore(score,total_questions,wrong_ans) {
+            document.querySelectorAll(".wrong-ques").forEach(el => el.innerText = wrong_ans);
+            const correct_ans = total_questions-wrong_ans
+            document.querySelector(".score").innerText = parseInt(score) + "%";
+            document.querySelector(".accuracy").innerText = parseInt(score) + "%";
+            
+            total_ques_ele.forEach(el => el.innerText = total_questions);
+            correct_ans_ele.forEach(el => {
+                el.textContent = correct_ans;
+            });
+
+            if (score <= 75) {
+                feedback.classList.add('warning');
+                feedback.classList.remove('success');
+                feedback.innerText = message[0];
+            } else {
+                feedback.classList.add('success');
+                feedback.classList.remove('warning');
+                feedback.innerText = message[1];
+            }
+        }
+
+ function scoreBreakdownChart(score, wrong_ans){
+    const scoreBreakdownChart = new Chart(scoreBreakdownCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Correct Answers', 'Incorrect Answers'],
+            datasets: [{
+                data: [score, wrong_ans],
+                backgroundColor: [
+                    '#10B981',
+                    '#EF4444'
+                ],
+                borderColor: 'white',
+                borderWidth: 2,
+                hoverOffset: 10
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animations: {
+                tension: {
+                    duration: 1000,
+                    easing: 'easeInOutQuad',
+                    from: 1,
+                    to: 0,
+                    loop: true
+                }
+            },
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        padding: 10,
+                        color: '#111827',
+                        font: {
+                            family: 'Inter',
+                            size: 17
+                        }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return tooltipItem.label + ': ' + tooltipItem.raw;
+                        }
+                    }
+                }
+            },
+            cutout: '50%'
+        }
+    });
+ }
+
+ function topicBreakdownChart(labels, data) {
+    const generateColors = (count) => {
+        // Generate `count` random colors
+        return Array.from({ length: count }, () =>
+            `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')}`
+        );
+    };
+
+    const topicBreakdownCtx = document.getElementById('topicBreakdownChart').getContext('2d');
+    const topicBreakdownChart = new Chart(topicBreakdownCtx, {
+        type: 'doughnut',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: data,
+                backgroundColor: generateColors(data.length), // Generate colors dynamically
+                borderColor: 'white',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                }
+            }
+        }
+    });
+}
+
+        
+        
+        function convertToList(inputString) {
+            if (typeof inputString !== "string") {
+                throw new Error("Input must be a string");
+            }
+            return inputString.split(",");
+        }
+        
+
+        async function getScores() {
+            const quiz_id = localStorage.getItem('quiz_id');
+            console.log(quiz_id);
+        
+            const url = `/api/v1/quiz-details?quiz_id=${quiz_id}`;
+       
+        
+            try {
+                const response = await fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'X-API-KEY': 'neet_QdrUprUid6I7h7HTvdfOJHib0aSNOy7iUyLYYdFaPcc', // Include the API key here
+                        'Accept': 'application/json'      // Optional, ensures JSON response
+                    }
+                });
+        
+                if (!response.ok) {
+                    throw new Error(`Response status: ${response.status}`);
+                }
+        
+                const json = await response.json();
+                console.log(json);
+                const wrong_ans = json[0]["total_questions"]-json[0]["total_marks"]
+                const total_questions = json[0]["total_questions"]
+                const correct_ans = total_questions-wrong_ans
+                const score = json[0]["score"]
+                displayScore(score,total_questions,wrong_ans)
+                const chapterlist = convertToList(json[0]["chapter_ids"])
+                //topicBreakdownChart(chapterlist,[34,45,56,67])
+                const completionTime = document.getElementById("completionTime").innerText = Math.round(json[0]["time_taken"]) + " seconds"
+                scoreBreakdownChart(correct_ans, wrong_ans)
+                return json;
+            } catch (error) {
+                console.error(error.message);
+            }
+        }
+        
+        localStorage.clear()
+        getScores()
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - NEET Quiz Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2D82B5;
+            --primary-dark: #015C92;
+            --secondary: #88CCF1;
+            --accent: #1B4965;
+            --success: #42A593;
+            --background: #F8FAFF;
+            --text: #1F2937;
+            --error: #E63946;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bg-shapes {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+        }
+
+        .shape {
+            position: absolute;
+            background: linear-gradient(45deg, var(--secondary), var(--success));
+            border-radius: 50%;
+            filter: blur(50px);
+            animation: floatAnimation 20s infinite ease-in-out;
+            opacity: 0.5;
+        }
+
+        .shape:nth-child(1) {
+            width: 400px;
+            height: 400px;
+            top: -200px;
+            right: -100px;
+        }
+
+        .shape:nth-child(2) {
+            width: 300px;
+            height: 300px;
+            bottom: -150px;
+            left: -100px;
+            animation-delay: -5s;
+        }
+
+        @keyframes floatAnimation {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(50px, 50px) rotate(90deg); }
+            50% { transform: translate(0, 100px) rotate(180deg); }
+            75% { transform: translate(-50px, 50px) rotate(270deg); }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 3rem;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 450px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            position: relative;
+            z-index: 1;
+            transform: translateY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: var(--text);
+            opacity: 0.8;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .input-container {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary);
+            opacity: 0.7;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            background: var(--background);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(45, 130, 181, 0.1);
+            outline: none;
+        }
+
+        .message {
+            margin-bottom: 1rem;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(45, 130, 181, 0.2);
+        }
+
+        .btn-primary.loading {
+            opacity: 0.7;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .btn-primary .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid #ffffff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .btn-primary.loading .spinner {
+            display: inline-block;
+        }
+
+        .btn-primary.loading .btn-text,
+        .btn-primary.loading .fa-arrow-right {
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--text);
+            opacity: 0.8;
+        }
+
+        .footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: var(--secondary);
+        }
+
+        /* Responsive styles */
+        @media (max-width: 480px) {
+            .container {
+                padding: 2rem;
+            }
+
+            h2 {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <div class="container">
+        <div class="logo-container">
+            <h2>NEET Quiz</h2>
+            <p class="subtitle">Your gateway to medical entrance excellence</p>
+        </div>
+
+        <form>
+            <div class="form-group">
+                <label for="email">Email or Student ID</label>
+                <div class="input-container">
+                    <i class="fas fa-user input-icon"></i>
+                    <input type="text" class="form-control" id="email" name="email" 
+                        placeholder="Enter your email or ID" required>
+                </div>
+            </div>
+            <div class="message"></div>
+
+            <button type="button" class="btn-primary" id="submit">
+                <span class="btn-text">Sign In</span>
+                <i class="fas fa-arrow-right"></i>
+                <div class="spinner"></div>
+            </button>
+        </form>
+
+        <p class="footer">New to NEET Quiz? <a href="/create-account.html">Create an account</a></p>
+    </div>
+
+    <script>
+        const submitButton = document.getElementById('submit');
+        const messageElement = document.getElementsByClassName("message")[0];
+
+        async function sendEmail(apiUrl, email, apiKey) {
+            // Show loading state
+            submitButton.classList.add('loading');
+            messageElement.textContent = '';
+            
+            try {
+                const queryString = new URLSearchParams({ email }).toString();
+                const fullUrl = `${apiUrl}?${queryString}`;
+        
+                const response = await fetch(fullUrl, {
+                    method: 'GET',
+                    headers: {
+                        'X-API-KEY': apiKey,
+                        'Accept': 'application/json'
+                    }
+                });
+        
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+        
+                const data = await response.json();
+        
+                if (data[0] == null) {
+                    messageElement.textContent = "Failed to Login!!";
+                    messageElement.style.color = "red";
+                } else {
+                    sessionStorage.setItem("student_id", data[0]["student_id"]);
+                    sessionStorage.setItem("name", data[0]["first_name"]);
+                    window.location.href = "dashboard.html";
+                }
+        
+                return data;
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                messageElement.textContent = "An error occurred. Please try again.";
+                messageElement.style.color = "red";
+            } finally {
+                // Remove loading state
+                submitButton.classList.remove('loading');
+            }
+        }
+        
+        const apiLink = "/api/v1/student-id";
+        submitButton.addEventListener("click", () => {
+            const email = document.getElementById("email").value;
+            if (email.trim()) {
+                sendEmail(apiLink, email, "neet_QdrUprUid6I7h7HTvdfOJHib0aSNOy7iUyLYYdFaPcc");
+            } else {
+                messageElement.textContent = "Please enter your email";
+                messageElement.style.color = "red";
+            }
+        });
+    </script>
+</body>
+</html>

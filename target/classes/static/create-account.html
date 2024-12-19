@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join NEET Quest - Your Journey to Medical Success</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #7C3AED;
+            --primary-dark: #6D28D9;
+            --secondary: #EC4899;
+            --accent: #8B5CF6;
+            --success: #10B981;
+            --background: #F8FAFF;
+            --text: #1F2937;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: white;
+            padding: 20px;
+            position: relative;
+
+        }
+
+        .bg-animation {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+
+        }
+
+        /* Larger Floating Elements */
+        .medical-icon {
+            position: absolute;
+            font-size: 65px;
+            color: var(--primary);
+            opacity: 0.1;
+            animation: float 20s infinite linear;
+        }
+
+        /* DNA Helix Animation */
+        .dna-helix {
+            position: absolute;
+            width: 200px;
+            /* Increased size */
+            height: 400px;
+            /* Increased size */
+            opacity: 0.1;
+            animation: rotate 20s infinite linear;
+        }
+
+        .dna-helix::before,
+        .dna-helix::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            /* Increased size */
+            height: 100%;
+            background: var(--primary);
+            left: 50%;
+            transform-origin: 50% 50%;
+        }
+
+        .dna-helix::before {
+            animation: dnaRotate 3s infinite linear;
+        }
+
+        .dna-helix::after {
+            animation: dnaRotate 3s infinite linear reverse;
+        }
+
+        /* Molecule Grid */
+        .molecule-grid {
+            position: absolute;
+            width: 400px;
+            /* Increased size */
+            height: 400px;
+            /* Increased size */
+            opacity: 0.1;
+            border: 6px solid var(--accent);
+            /* Increased size */
+            transform: rotate(45deg);
+            animation: pulse 4s infinite ease-in-out;
+        }
+
+        /* Floating Formulas */
+        .formula {
+            position: absolute;
+            font-family: 'Times New Roman', serif;
+            font-size: 30px;
+            /* Increased size */
+            color: var(--secondary);
+            opacity: 0.15;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes dnaRotate {
+            0% {
+                transform: rotateX(0deg) translateX(-50%);
+            }
+
+            100% {
+                transform: rotateX(360deg) translateX(-50%);
+            }
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: rotate(45deg) scale(1);
+            }
+
+            50% {
+                transform: rotate(45deg) scale(1.1);
+            }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+
+            25% {
+                transform: translate(100px, 100px) rotate(90deg);
+            }
+
+            50% {
+                transform: translate(0, 200px) rotate(180deg);
+            }
+
+            75% {
+                transform: translate(-100px, 100px) rotate(270deg);
+            }
+
+            100% {
+                transform: translate(0, 0) rotate(360deg);
+            }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 500px;
+            /* Increased width */
+            box-shadow: 0 20px 40px rgba(124, 58, 237, 0.15);
+            position: relative;
+            z-index: 1;
+            border: 1px solid rgba(124, 58, 237, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            /* Increased font size */
+            font-weight: 700;
+            position: relative;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            /* Increased underline size */
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text);
+            font-size: 1em;
+            /* Increased font size */
+        }
+
+        .input-container {
+            position: relative;
+        }
+
+        .input-container i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary);
+            opacity: 0.7;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            /* Increased padding */
+            border: 2px solid rgba(124, 58, 237, 0.1);
+            border-radius: 12px;
+            font-size: 1.1rem;
+            /* Increased font size */
+            transition: all 0.3s ease;
+            background: var(--background);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.1);
+            outline: none;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            /* Increased font size */
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(124, 58, 237, 0.2);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn i {
+            margin-left: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .submit-btn:hover i {
+            transform: translateX(5px);
+        }
+
+        /* Subject Tags */
+        .subject-tags {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .subject-tag {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            /* Increased font size */
+            color: white;
+            background: var(--primary);
+            opacity: 0.8;
+        }
+
+        .physics {
+            background: var(--primary);
+        }
+
+        .chemistry {
+            background: var(--secondary);
+        }
+
+        .biology {
+            background: var(--success);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-animation">
+        <!-- Larger DNA Helix -->
+        <!-- <div class="dna-helix" style="top: 10%; left: 10%;"></div>
+        <div class="dna-helix" style="bottom: 20%; right: 15%;"></div> -->
+
+        <!-- Larger Molecule Grid -->
+        <!-- <div class="molecule-grid" style="top: 30%; left: 20%;"></div>
+        <div class="molecule-grid" style="bottom: 30%; right: 20%;"></div> -->
+
+        <!-- Larger Medical Icons -->
+        <i class="fas fa-microscope medical-icon" style="top: 15%; left: 25%;"></i>
+        <i class="fas fa-dna medical-icon" style="top: 45%; right: 15%;"></i>
+        <i class="fas fa-flask medical-icon" style="bottom: 25%; left: 15%;"></i>
+        <i class="fas fa-atom medical-icon" style="top: 35%; right: 25%;"></i>
+
+        <!-- Floating Formulas -->
+        <div class="formula" style="top: 20%; right: 30%;">E = mc²</div>
+        <div class="formula" style="bottom: 30%; left: 20%;">H₂O</div>
+        <div class="formula" style="top: 40%; left: 35%;">CO₂</div>
+    </div>
+
+    <div class="container">
+        <h1>Join NEET Quest</h1>
+        <p style="text-align: center; margin-bottom: 20px; color: var(--text); opacity: 0.8;">
+            Begin your journey to medical excellence
+        </p>
+
+        <!-- Subject Tags -->
+        <div class="subject-tags">
+            <!-- <span class="subject-tag physics">Physics</span>
+            <span class="subject-tag chemistry">Chemistry</span> -->
+            <span class="subject-tag biology">Biology</span>
+        </div>
+
+        <form class="signup-form">
+            <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <div class="input-container">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="fullName" name="fullName" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <div class="input-container">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="email" name="email" required>
+                </div>
+            </div>
+            <div class="message"></div>
+            <!-- <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-container">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" name="password" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <div class="input-container">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required>
+                </div>
+            </div> -->
+
+
+
+            <button type="submit" class="submit-btn">
+                Create Account <i class="fas fa-arrow-right"></i>
+                <span class="spinner" style="display: none; margin-left: 8px;">
+                    <i class="fas fa-spinner fa-spin"></i>
+                </span>
+            </button>
+
+            <p class="login-text">
+                Already have an account? <a href="/login.html">Login</a>
+            </p>
+        </form>
+    </div>
+
+    <script>
+        // Create dynamic floating elements
+        function createFloatingElement() {
+            const icons = ['microscope', 'dna', 'flask', 'atom', 'brain', 'heart'];
+            const formulas = ['H₂O', 'CO₂', 'O₂', 'C₆H₁₂O₆', 'NaCl'];
+
+            const element = document.createElement('div');
+
+            if (Math.random() > 0.5) {
+                element.className = 'medical-icon fas fa-' + icons[Math.floor(Math.random() * icons.length)];
+            } else {
+                element.className = 'formula';
+                element.textContent = formulas[Math.floor(Math.random() * formulas.length)];
+            }
+
+            element.style.left = Math.random() * 100 + 'vw';
+            element.style.top = Math.random() * 100 + 'vh';
+            element.style.animationDuration = (Math.random() * 10 + 10) + 's';
+
+            document.querySelector('.bg-animation').appendChild(element);
+
+            setTimeout(() => element.remove(), 20000);
+        }
+
+        setInterval(createFloatingElement, 3000);
+
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelector('form').addEventListener('submit', async (event) => {
+                event.preventDefault(); // Prevent default form submission
+
+                // Show spinner
+                const spinner = document.querySelector('.spinner');
+                spinner.style.display = 'inline-block';
+
+                const data = {
+                    first_name: document.getElementById("fullName").value,
+                    email: document.getElementById("email").value
+                };
+                console.log(data)
+                sessionStorage.setItem("name",data["first_name"])
+
+                const url = `/api/v1/student-id`; // API endpoint
+
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST', // Use POST method
+                        headers: {
+                            'Content-Type': 'application/json', // Specify JSON content type
+                            'Accept': 'application/json', // Optional: Specify accepted response format
+                            'x-api-key': 'neet_QdrUprUid6I7h7HTvdfOJHib0aSNOy7iUyLYYdFaPcc' // Add your API key in the header
+                        },
+                        body: JSON.stringify(data), // Pass data in JSON format
+
+                    });
+
+                    const responseData = await response.json();
+                    // Hide spinner
+                    spinner.style.display = 'none';
+
+                    if (response.ok) {
+                        document.querySelector(".message").innerText = ""
+                        sessionStorage.setItem("student_id",responseData["studentId"])
+                        window.location.href = "dashboard.html"
+
+                    } else {
+                        console.error('Registration failed:', response.statusText);
+                        console.log(responseData)
+                        document.querySelector(".message").innerText = responseData["error"]
+                        document.querySelector(".message").style.color = "red"
+                    }
+                } catch (error) {
+                    // Hide spinner
+                    spinner.style.display = 'none';
+                    console.error('Error during registration:', error);
+                }
+            });
+        });
+
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biology Quiz Manager</title>
+    <style>
+        :root {
+            --primary: #4CAF50;
+            --primary-dark: #388E3C;
+            --secondary: #2196F3;
+            --accent: #FF9800;
+            --success: #8BC34A;
+            --background: #ffffff;
+            --text: #333333;
+            --border-radius: 12px;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text);
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: var(--border-radius);
+        }
+
+        h1 {
+            color: var(--primary-dark);
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .chapter-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 8px;
+            margin-top: 2rem;
+        }
+
+        .chapter-table th {
+            background: var(--primary);
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .chapter-table th:first-child {
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+        }
+
+        .chapter-table th:last-child {
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+
+        .chapter-table tr {
+            transition: var(--transition);
+        }
+
+        .chapter-table td {
+            padding: 1rem;
+            background: #f8f9fa;
+            border-top: 1px solid #dee2e6;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .chapter-table td:first-child {
+            border-left: 1px solid #dee2e6;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+        }
+
+        .chapter-table td:last-child {
+            border-right: 1px solid #dee2e6;
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+
+        .chapter-table tr:hover td {
+            background: #f0f0f0;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .add-questions-input {
+            width: 100px;
+            padding: 0.5rem;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .add-questions-input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+        }
+
+        .add-button {
+            padding: 0.5rem 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-left: 0.5rem;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .add-button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .question-count {
+            font-weight: bold;
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+
+        .total-questions {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: var(--border-radius);
+            text-align: right;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+
+        .chapter-name {
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0.5rem;
+                margin: 0;
+                border-radius: 0;
+            }
+
+            .chapter-table {
+                display: block;
+            }
+            
+            .chapter-table thead {
+                display: none; /* Hide table header on mobile */
+            }
+            
+            .chapter-table tbody, 
+            .chapter-table tr, 
+            .chapter-table td {
+                display: block;
+                width: 100%;
+            }
+            
+            .chapter-table tr {
+                margin-bottom: 1rem;
+                background: #f8f9fa;
+                border-radius: var(--border-radius);
+                padding: 1rem;
+                box-shadow: var(--shadow);
+            }
+            
+            .chapter-table td {
+                border: none;
+                padding: 0.5rem 0;
+                background: none;
+                position: relative;
+                padding-left: 50%;
+                text-align: right;
+            }
+            
+            .chapter-table td:before {
+                content: attr(data-label);
+                position: absolute;
+                left: 0;
+                width: 45%;
+                text-align: left;
+                font-weight: 600;
+            }
+            
+            .chapter-table td:first-child {
+                padding-left: 0;
+                text-align: left;
+            }
+            
+            .question-controls {
+                justify-content: flex-end;
+            }
+
+            .bulk-actions {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+
+            .bulk-action-btn {
+                flex: 1;
+                min-width: 150px;
+                font-size: 0.9rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            .quiz-actions {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .total-questions {
+                width: 100%;
+                text-align: center;
+            }
+
+            .start-quiz-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .question-controls {
+                flex-wrap: nowrap;
+                min-width: 120px;
+            }
+
+            .add-questions-input {
+                width: 60px;
+                padding: 0.4rem;
+                font-size: 0.9rem;
+            }
+
+            .quick-add-btn {
+                width: 28px;
+                height: 28px;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 0;
+            }
+
+            .header {
+                padding: 0.8rem;
+                margin-bottom: 1rem;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .subtitle {
+                font-size: 0.9rem;
+            }
+
+            .chapter-table th,
+            .chapter-table td {
+                padding: 0.5rem;
+                font-size: 0.9rem;
+            }
+
+            .batch-input,
+            .quiz-summary {
+                width: 95%;
+                padding: 1rem;
+            }
+
+            .summary-list {
+                max-height: 250px;
+            }
+        }
+
+        /* Add these new styles */
+        .question-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .quick-add-btn {
+            width: 32px;
+            height: 32px;
+            border: none;
+            border-radius: 50%;
+            background: var(--secondary);
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .quick-add-btn:hover {
+            background: var(--primary-dark);
+            transform: scale(1.1);
+        }
+
+        .batch-input {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            z-index: 1000;
+            display: none;
+        }
+
+        .batch-input.active {
+            display: block;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            z-index: 999;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        .batch-input textarea {
+            width: 100%;
+            height: 200px;
+            margin: 1rem 0;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            resize: vertical;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .bulk-actions {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .bulk-action-btn {
+            padding: 0.5rem 1rem;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .bulk-action-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .chapter-checkbox {
+            width: 18px;
+            height: 18px;
+            margin-right: 8px;
+        }
+
+        .quiz-actions {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .start-quiz-btn {
+            padding: 1rem 2rem;
+            background: var(--success);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .start-quiz-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .start-quiz-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .start-quiz-btn i {
+            font-size: 1.2rem;
+        }
+
+        .quiz-summary {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            z-index: 1000;
+            display: none;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .quiz-summary.active {
+            display: block;
+        }
+
+        .summary-list {
+            margin: 1rem 0;
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: var(--border-radius);
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Biology Quiz Manager</h1>
+            <p class="subtitle">Add questions to each chapter to create your perfect quiz!</p>
+        </div>
+
+        <div class="bulk-actions">
+            <button class="bulk-action-btn" onclick="openBatchInput()">Batch Add Questions</button>
+            <button class="bulk-action-btn" onclick="distributeQuestions()">Distribute Evenly</button>
+            <button class="bulk-action-btn" onclick="clearAll()">Clear All</button>
+        </div>
+        
+        <table class="chapter-table">
+            <thead>
+                <tr>
+                    <th><input type="checkbox" id="selectAll" onclick="toggleAllChapters()"></th>
+                    <th>Chapter Name</th>
+                    <th>Current Questions</th>
+                    <th>Quick Add</th>
+                </tr>
+            </thead>
+            <tbody id="chapterTableBody">
+                <!-- Will be populated by JavaScript -->
+            </tbody>
+        </table>
+
+        <div class="quiz-actions">
+            <div class="total-questions">
+                Total Questions: <span id="totalQuestions" class="question-count">0</span>
+                <span id="totalAddedQuestions" class="question-count"></span>
+            </div>
+            <button id="startQuizBtn" class="start-quiz-btn" onclick="showQuizSummary()" disabled>
+                <i class="fas fa-play"></i> Start Quiz
+            </button>
+        </div>
+    </div>
+
+    <!-- Batch Input Modal -->
+    <div class="overlay" id="overlay"></div>
+    <div class="batch-input" id="batchInput">
+        <h2>Batch Add Questions</h2>
+        <p>Enter the number of questions for each selected chapter:</p>
+        <input type="number" id="batchNumber" min="1" class="add-questions-input" placeholder="Number of questions">
+        <div class="action-buttons">
+            <button class="add-button" onclick="applyBatchAdd()">Apply</button>
+            <button class="bulk-action-btn" onclick="closeBatchInput()">Cancel</button>
+        </div>
+    </div>
+
+    <div class="quiz-summary" id="quizSummary">
+        <h2>Quiz Summary</h2>
+        <p>You're about to start a quiz with the following questions:</p>
+        <div class="summary-list" id="summaryList">
+            <!-- Will be populated by JavaScript -->
+        </div>
+        <div class="action-buttons">
+            <button class="add-button" onclick="startQuiz()">Start Quiz</button>
+            <button class="bulk-action-btn" onclick="closeQuizSummary()">Cancel</button>
+        </div>
+    </div>
+
+    <script>
+        const chapters = {
+            "The Living World": { id: "CH_1", count: 0 },
+            "Biological Classification": { id: "CH_2", count: 0 },
+            "Plant Kingdom": { id: "CH_3", count: 0 },
+            "Animal Kingdom": { id: "CH_4", count: 0 },
+            "Morphology of Flowering Plants": { id: "CH_5", count: 0 },
+            "Anatomy of Flowering Plants": { id: "CH_6", count: 0 },
+            "Structural Organisation in Animals": { id: "CH_7", count: 0 },
+            "Cell: The Unit of Life": { id: "CH_8", count: 0 },
+            "Biomolecules": { id: "CH_9", count: 0 },
+            "Cell Cycle and Cell Division": { id: "CH_10", count: 0 },
+            "Transport in Plants": { id: "CH_11", count: 0 },
+            "Photosynthesis in Higher Plants": { id: "CH_12", count: 0 },
+            "Respiration in Plants": { id: "CH_13", count: 0 },
+            "Plant Growth and Development": { id: "CH_14", count: 0 },
+            "Digestion and Absorption": { id: "CH_15", count: 0 },
+            "Breathing and Exchange of Gases": { id: "CH_16", count: 0 },
+            "Body Fluids and Circulation": { id: "CH_17", count: 0 },
+            "Locomotion and Movement": { id: "CH_18", count: 0 },
+            "Sexual Reproduction in Flowering plants": { id: "CH_19", count: 0 },
+            "Human Reproduction": { id: "CH_20", count: 0 },
+            "Reproductive Health": { id: "CH_21", count: 0 },
+            "Principles of Inheritance and Variation": { id: "CH_22", count: 0 },
+            "Molecular Basis of Inheritance": { id: "CH_23", count: 0 },
+            "Evolution": { id: "CH_24", count: 0 },
+            "Human Health and Disease": { id: "CH_25", count: 0 },
+            "Strategies for Enhancement in Food Production": { id: "CH_26", count: 0 },
+            "Microbes in Human Welfare": { id: "CH_27", count: 0 },
+            "Biotechnology: Principles and Processes": { id: "CH_28", count: 0 },
+            "Biotechnology and its Applications": { id: "CH_29", count: 0 },
+            "Organisms and Populations": { id: "CH_30", count: 0 },
+            "Ecosystem": { id: "CH_31", count: 0 },
+            "Environmental Issues": { id: "CH_32", count: 0 }
+        }
+
+        function updateTable() {
+            const tableBody = document.getElementById('chapterTableBody');
+            tableBody.innerHTML = '';
+            
+            Object.entries(chapters).forEach(([chapter, data]) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><input type="checkbox" class="chapter-checkbox" data-chapter="${chapter}"></td>
+                    <td data-label="Chapter Name" class="chapter-name">${chapter}</td>
+                    <td data-label="Current Questions" class="question-count">${data.count}</td>
+                    <td data-label="Quick Add">
+                        <div class="question-controls">
+                            <button class="quick-add-btn" onclick="quickAdd('${chapter}', -1)">-</button>
+                            <input type="number" min="0" class="add-questions-input" 
+                                   value="${data.count}" 
+                                   onchange="updateQuestions('${chapter}', this.value)">
+                            <button class="quick-add-btn" onclick="quickAdd('${chapter}', 1)">+</button>
+                        </div>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+
+            updateTotalQuestions();
+            updateStartButton();
+        }
+
+        function quickAdd(chapter, amount) {
+            const currentCount = chapters[chapter].count;
+            const newCount = Math.max(0, currentCount + amount);
+            chapters[chapter].count = newCount;
+            updateTable();
+        }
+
+        function updateQuestions(chapter, value) {
+            const count = parseInt(value) || 0;
+            chapters[chapter].count = Math.max(0, count);
+            updateTable();
+            updateTotalQuestions();
+        }
+
+        function toggleAllChapters() {
+            const selectAll = document.getElementById('selectAll');
+            const checkboxes = document.querySelectorAll('.chapter-checkbox');
+            checkboxes.forEach(checkbox => checkbox.checked = selectAll.checked);
+        }
+
+        function openBatchInput() {
+            document.getElementById('overlay').classList.add('active');
+            document.getElementById('batchInput').classList.add('active');
+        }
+
+        function closeBatchInput() {
+            document.getElementById('overlay').classList.remove('active');
+            document.getElementById('batchInput').classList.remove('active');
+        }
+
+        function applyBatchAdd() {
+            const questionCount = parseInt(document.getElementById('batchNumber').value);
+            if (questionCount > 0) {
+                const selectedChapters = document.querySelectorAll('.chapter-checkbox:checked');
+                selectedChapters.forEach(checkbox => {
+                    const chapter = checkbox.dataset.chapter;
+                    chapters[chapter].count = questionCount;
+                });
+                updateTable();
+                closeBatchInput();
+            }
+        }
+
+        function distributeQuestions() {
+            const totalQuestions = parseInt(prompt("Enter total questions to distribute:")) || 0;
+            if (totalQuestions > 0) {
+                const selectedChapters = Array.from(document.querySelectorAll('.chapter-checkbox:checked'))
+                    .map(checkbox => checkbox.dataset.chapter);
+                
+                if (selectedChapters.length > 0) {
+                    const questionsPerChapter = Math.floor(totalQuestions / selectedChapters.length);
+                    const remainder = totalQuestions % selectedChapters.length;
+                    
+                    selectedChapters.forEach((chapter, index) => {
+                        chapters[chapter].count = questionsPerChapter + (index < remainder ? 1 : 0);
+                    });
+                    updateTable();
+                }
+            }
+        }
+
+        function clearAll() {
+            if (confirm("Are you sure you want to clear all questions?")) {
+                Object.keys(chapters).forEach(chapter => chapters[chapter].count = 0);
+                updateTable();
+            }
+        }
+
+        function updateTotalQuestions() {
+            const total = Object.values(chapters).reduce((sum, data) => sum + (data.count || 0), 0);
+            console.log("Total Questions:", total);
+            const totalAdded = Object.values(chapters).filter(data => data.count > 0).length;
+            document.getElementById('totalQuestions').textContent = total;
+            document.getElementById('totalAddedQuestions').textContent = ` (Total Added: ${totalAdded})`;
+        }
+
+        function updateStartButton() {
+            const totalQuestions = Object.values(chapters).reduce((sum, data) => sum + data.count, 0);
+            const startButton = document.getElementById('startQuizBtn');
+            startButton.disabled = totalQuestions === 0;
+        }
+
+        function showQuizSummary() {
+            const summaryList = document.getElementById('summaryList');
+            summaryList.innerHTML = '';
+            
+            Object.entries(chapters).forEach(([chapter, data]) => {
+                if (data.count > 0) {
+                    const item = document.createElement('div');
+                    item.className = 'summary-item';
+                    item.innerHTML = `
+                        <span>${chapter}</span>
+                        <span class="question-count">${data.count} questions</span>
+                    `;
+                    summaryList.appendChild(item);
+                }
+            });
+
+            document.getElementById('overlay').classList.add('active');
+            document.getElementById('quizSummary').classList.add('active');
+        }
+
+        function closeQuizSummary() {
+            document.getElementById('overlay').classList.remove('active');
+            document.getElementById('quizSummary').classList.remove('active');
+        }
+
+        function startQuiz() {
+            const quizConfig = {
+                chapters: Object.entries(chapters)
+                    .filter(([_, data]) => data.count > 0)
+                    .map(([chapter, data]) => ({
+                        chapter_id: data.id.toLowerCase(),
+                        question_number: String(data.count)
+                    }))
+            };
+
+            console.log(quizConfig);
+            localStorage.setItem("quizConfiq",JSON.stringify(quizConfig))
+            localStorage.setItem("quiz_type","custom-mix")
+            window.location.href = "final_quiz_interface.html"
+            // Rest of your code...
+        }
+        
+        // Initialize the table
+        updateTable();
+        //console.log(chapters["Plant Kingdom"])
+    </script>
+</body>
+</html>
