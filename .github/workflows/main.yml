@@ -49,21 +49,34 @@ jobs:
       with:
         name: spring-boot-app
 
+    - name: Verify Artifact Existence
+      run: |
+        echo "Listing files in the target directory:"
+        ls -la target/
+
+    - name: Create Archive (tar)
+      run: |
+        echo "Creating tar archive..."
+        tar -czvf /tmp/spring-boot-app.tar.gz -C target .
+
     - name: Deploy to DigitalOcean Droplet
       uses: appleboy/scp-action@v0.1.6
       with:
         host: ${{ secrets.DO_DROPLET_IP }}
         username: ${{ secrets.DO_DROPLET_USER }}
         key: ${{ secrets.DO_PRIVATE_KEY }}
-        source: target/*.jar
-        target: /home/${{ secrets.DO_DROPLET_USER }}/app.jar
+        source: /tmp/spring-boot-app.tar.gz
+        target: /home/${{ secrets.DO_DROPLET_USER }}/app.tar.gz
 
-    - name: Start Application on Droplet
+    - name: Extract and Start Application on Droplet
       uses: appleboy/ssh-action@v0.1.6
       with:
         host: ${{ secrets.DO_DROPLET_IP }}
         username: ${{ secrets.DO_DROPLET_USER }}
         key: ${{ secrets.DO_PRIVATE_KEY }}
         script: |
+          echo "Extracting archive..."
+          tar -xzvf /home/${{ secrets.DO_DROPLET_USER }}/app.tar.gz -C /home/${{ secrets.DO_DROPLET_USER }}/
+          echo "Starting the application..."
           pkill -f 'java -jar app.jar' || true
           nohup java -jar /home/${{ secrets.DO_DROPLET_USER }}/app.jar > app.log 2>&1 &
