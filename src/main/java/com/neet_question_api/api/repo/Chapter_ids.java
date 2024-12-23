@@ -13,6 +13,6 @@ public interface Chapter_ids extends JpaRepository<Chapter_id, Integer> {
     List<Chapter_id> findAll();
     long count();
     // Custom query to get 4 random chapters
-    @Query(value = "SELECT ch_id FROM chapter_id ORDER BY RAND() LIMIT 4", nativeQuery = true)
+    @Query(value = "SELECT ch_id FROM chapter_id WHERE status = 'success' ORDER BY RAND() LIMIT 4", nativeQuery = true)
     List<String> findRandomChapterIds();
 }
