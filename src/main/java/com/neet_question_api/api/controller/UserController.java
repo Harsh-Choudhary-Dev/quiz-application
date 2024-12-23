@@ -1,7 +1,10 @@
 package com.neet_question_api.api.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.neet_question_api.api.modal.ChapterIds;
 import com.neet_question_api.api.modal.Students;
+import com.neet_question_api.api.service.QuestionsService;
 import com.neet_question_api.api.service.UserService;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +17,15 @@ import java.util.Map;
 
 @Data
 @RestController
-@CrossOrigin(origins = "http://127.0.0.1:5500/",
-        methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE},
-        allowedHeaders = "Content-Type")
+
 @RequestMapping("api/owner/v1")
 public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private QuestionsService questionsService;
     @PostMapping("/create-account")
     public List createUserAccount(@RequestParam String email,@RequestParam String username) {
         return Collections.singletonList(userService.createNewAccount(email, username));
@@ -59,4 +63,11 @@ public class UserController {
     public List<Students> getStudents(){
         return userService.fetchStudents();
     }
-}
+
+    @GetMapping("/all-questions")
+    public JsonNode getAllQuestions(@RequestParam List<ChapterIds> chapter_id){
+            return questionsService.fetchCustomMixQuestions(chapter_id);
+        }
+    }
+
+

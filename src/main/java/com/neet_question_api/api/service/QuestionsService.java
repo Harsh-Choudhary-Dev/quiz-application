@@ -94,7 +94,7 @@ public class QuestionsService {
     public JsonNode fetchCustomMixQuestions(List<ChapterIds> chapterIdsList) {
         List<JsonNode> ques  =customMix.loopJson(chapterIdsList);
         int question_count = ques.get(0).size();
-        System.out.println("harsh is question from fetchCustomMixQuestions"+ques);
+        //System.out.println("harsh is question from fetchCustomMixQuestions"+ques);
         return customMix.wrapJsonInDataKey(ques,question_count);
     }
     public List<JsonNode> fetchAutoMixQuestions(List<String> chapterIdsList, int limit) {
