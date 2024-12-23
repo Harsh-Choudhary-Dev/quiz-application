@@ -68,14 +68,15 @@ public class QuestionsService {
 
 
     public Object fetchRandomDataFromTable() {
-        List<String> chapters = Arrays.asList(
-                "CH_1", "CH_2", "CH_3", "CH_4", "CH_5",
-                "CH_7", "CH_8", "CH_9", "CH_10", "CH_11",
-                "CH_12", "CH_13", "CH_14", "CH_15", "CH_16",
-                "CH_17", "CH_18", "CH_19", "CH_20", "CH_21"
-        );
+//        List<String> chapters = Arrays.asList(
+//                "CH_1", "CH_2", "CH_3", "CH_4", "CH_5",
+//                "CH_7", "CH_8", "CH_9", "CH_10", "CH_11",
+//                "CH_12", "CH_13", "CH_14", "CH_15", "CH_16",
+//                "CH_17", "CH_18", "CH_19", "CH_20", "CH_21"
+//        );
 
-
+        List<String> chapters = chapter_ids.findRandomChapterIds();
+        System.out.println(chapters);
         Collections.shuffle(chapters);
         List<ChapterIds> resultList = new ArrayList<>();
         int totalQuestions = 0;
