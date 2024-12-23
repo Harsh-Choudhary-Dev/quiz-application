@@ -65,7 +65,7 @@ public class UserController {
     }
 
     @GetMapping("/all-questions")
-    public JsonNode getAllQuestions(@RequestParam List<ChapterIds> chapter_id){
+    public JsonNode getAllQuestions(@RequestBody List<ChapterIds> chapter_id){
             return questionsService.fetchCustomMixQuestions(chapter_id);
         }
     }
