@@ -11,5 +11,6 @@ public class ApiApplication {
 		SpringApplication.run(ApiApplication.class, args);
 		System.out.println("Hello World");
 		System.out.println("hello harsh");
+		System.out.println("hello updated user controller");
 	}
 }
