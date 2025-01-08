@@ -3,6 +3,7 @@
 /home/harsh/programming/quiz-application/quiz-application/src/main/java/com/neet_question_api/api/aop/ApiLoggingAspect.java
 /home/harsh/programming/quiz-application/quiz-application/src/main/java/com/neet_question_api/api/config/WebConfig.java
 /home/harsh/programming/quiz-application/quiz-application/src/main/java/com/neet_question_api/api/controller/ApiController.java
+/home/harsh/programming/quiz-application/quiz-application/src/main/java/com/neet_question_api/api/controller/HomeController.java
 /home/harsh/programming/quiz-application/quiz-application/src/main/java/com/neet_question_api/api/controller/UserController.java
 /home/harsh/programming/quiz-application/quiz-application/src/main/java/com/neet_question_api/api/modal/AnswerValidation.java
 /home/harsh/programming/quiz-application/quiz-application/src/main/java/com/neet_question_api/api/modal/ApiKeys.java
