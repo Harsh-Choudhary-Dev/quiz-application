@@ -54,6 +54,9 @@ public class QuestionsService {
     private Chapter_ids chapter_ids;
 
     @Autowired
+    private ReportedQuestionRepo reportedQuestionRepo;
+
+    @Autowired
     private DynamicTables dynamicTables;
 
     @Autowired
@@ -64,7 +67,6 @@ public class QuestionsService {
     private PerformanceSummaryRepo performanceSummaryRepo;
     @Autowired
     private ChapterListRepo chapterListRepo;
-
 
 
     public Object fetchRandomDataFromTable() {
@@ -89,24 +91,27 @@ public class QuestionsService {
         }
         return fetchCustomMixQuestions(resultList);
     }
-//    public Object fetchRandomDataFromTable(String tableName) {
+
+    //    public Object fetchRandomDataFromTable(String tableName) {
 //        return fetchRandomDataFromTable(tableName,"50");
 //    }
     public JsonNode fetchCustomMixQuestions(List<ChapterIds> chapterIdsList) {
-        List<JsonNode> ques  =customMix.loopJson(chapterIdsList);
+        List<JsonNode> ques = customMix.loopJson(chapterIdsList);
         int question_count = ques.get(0).size();
         //System.out.println("harsh is question from fetchCustomMixQuestions"+ques);
-        return customMix.wrapJsonInDataKey(ques,question_count);
+        return customMix.wrapJsonInDataKey(ques, question_count);
     }
+
     public List<JsonNode> fetchAutoMixQuestions(List<String> chapterIdsList, int limit) {
-        List<Integer> values = calculation.distribute(limit,chapterIdsList.size());
+        List<Integer> values = calculation.distribute(limit, chapterIdsList.size());
         List<ChapterIds> chapterJson = jsonCreator.createJsonFromChapters(chapterIdsList, values);
         List<JsonNode> ques = customMix.loopJson(chapterJson);
         int question_count = ques.get(0).size();
 
-         return Collections.singletonList(customMix.wrapJsonInDataKey(ques,question_count));
+        return Collections.singletonList(customMix.wrapJsonInDataKey(ques, question_count));
 
     }
+
     public ResponseEntity<Map<String, String>> generateUserId(Students student_name) {
         Map<String, String> response = new HashMap<>();
         student_name.setStudent_id(uniqueIds.generateUserId());
@@ -114,32 +119,33 @@ public class QuestionsService {
             studentsRepo.save(student_name);
             response.put("studentId", student_name.getStudent_id());
             return ResponseEntity.ok(response);
-        }
-        catch(DataIntegrityViolationException e){
+        } catch (DataIntegrityViolationException e) {
             response.put("error", "email already exist");
             return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
-        }catch(Exception e){
+        } catch (Exception e) {
             response.put("error", "Internal error");
             return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
         }
     }
+
     public ObjectNode fetchExamModeQuestions() {
 //        5 are missing only 85 instead of 90
         ObjectNode wrappedJson = objectMapper.createObjectNode();
         List<Chapter_id> chapterList = chapter_ids.findAll();
         long total_chapters = chapter_ids.count();
-        List<Questions> ques =  customMix.questionsForAllChapters(chapterList,total_chapters);
+        List<Questions> ques = customMix.questionsForAllChapters(chapterList, total_chapters);
         int question_count = ques.size();
         wrappedJson.set("data", objectMapper.valueToTree(ques));
         wrappedJson.put("question_count", question_count);
         return wrappedJson;
     }
+
     @Transactional
-public Object checkWrongOrRight(List<AnswerValidation> ansDetails){
+    public Object checkWrongOrRight(List<AnswerValidation> ansDetails) {
         Map<String, Object> record = calculation.calculateCorrectAnsChapterWise(ansDetails);
-    @SuppressWarnings("unchecked")
+        @SuppressWarnings("unchecked")
         Map<String, Integer> correctAnswers = (Map<String, Integer>) record.get("correct_question_answered");
-    @SuppressWarnings("unchecked")
+        @SuppressWarnings("unchecked")
         Map<String, Integer> chapterwiseTotalQuestion = (Map<String, Integer>) record.get("chapterwise_total_question");
         for (Map.Entry<String, Integer> entry : correctAnswers.entrySet()) {
             String chapterId = entry.getKey();
@@ -152,37 +158,38 @@ public Object checkWrongOrRight(List<AnswerValidation> ansDetails){
             performanceMatrix.setChapter_id(chapterId);
 //            System.out.println(performanceMatrix);
             performanceRepo.insertChapterPerformance(performanceMatrix);
-    }
+        }
         return record;
-}
+    }
 
-    public Object getStudentAnalytics(String student_id){
-            return performanceSummaryRepo.findChapterPerformanceByStudentAndInterval(student_id);
+    public Object getStudentAnalytics(String student_id) {
+        return performanceSummaryRepo.findChapterPerformanceByStudentAndInterval(student_id);
     }
 
 
-    public Object fetchQuestionsBasedOnPerformance(String student_id){
-        List<PerformanceSummary> studentPerformance =  performanceSummaryRepo.findChapterPerformanceByStudentAndInterval(student_id);
+    public Object fetchQuestionsBasedOnPerformance(String student_id) {
+        List<PerformanceSummary> studentPerformance = performanceSummaryRepo.findChapterPerformanceByStudentAndInterval(student_id);
 //        System.out.println(studentPerformance);
-        List<ChapterIds> questionDistribution = calculation.calculateQuestionDistribution(studentPerformance,50);
+        List<ChapterIds> questionDistribution = calculation.calculateQuestionDistribution(studentPerformance, 50);
         List<JsonNode> questions = customMix.loopJson(questionDistribution);
         int question_count = (questions.get(0).size());
-        return Collections.singletonList(customMix.wrapJsonInDataKey(questions,question_count)).get(0);
+        return Collections.singletonList(customMix.wrapJsonInDataKey(questions, question_count)).get(0);
     }
 
-    public Object fetchRecentQuizzes(String student_id){
+    public Object fetchRecentQuizzes(String student_id) {
         return studentQuizResultsRepo.findTop5ByStudentId(student_id);
     }
-    public Object fetchExistingStudent(String email){
+
+    public Object fetchExistingStudent(String email) {
 //        System.out.println(email);
         return studentsRepo.findByEmail(email);
     }
 
-    public List<StudentQuizResults> fetchQuizDetails(String quiz_id){
+    public List<StudentQuizResults> fetchQuizDetails(String quiz_id) {
         return studentQuizResultsRepo.findByQuizId(quiz_id);
     }
 
-    public ResponseEntity<Map<String, String>> storeStudentQuizDetails(StudentQuizResults studentQuizResults){
+    public ResponseEntity<Map<String, String>> storeStudentQuizDetails(StudentQuizResults studentQuizResults) {
         String quiz_id = uniqueIds.generateUserId();
         Map<String, String> response = new HashMap<>();
         studentQuizResults.setQuiz_id(quiz_id);
@@ -194,7 +201,7 @@ public Object checkWrongOrRight(List<AnswerValidation> ansDetails){
         return ResponseEntity.ok(response);
     }
 
-    public ResponseEntity<List<Map<String, Object>>> fetchPerformanceMatrix(String student_id,String interval){
+    public ResponseEntity<List<Map<String, Object>>> fetchPerformanceMatrix(String student_id, String interval) {
         System.out.println(student_id);
         List<Object[]> result = studentQuizResultsRepo.findQuizStatsForLastNDays(student_id, Integer.parseInt(interval));
 
@@ -211,23 +218,41 @@ public Object checkWrongOrRight(List<AnswerValidation> ansDetails){
         return ResponseEntity.ok(response);
     }
 
-public ResponseEntity<Map<String, String>> storeUserFeedback(Feedback feedback){
-    Map<String, String> response = new HashMap<>();
-    feedbackRepo.save(feedback);
-    response.put("status", "Feedback submitted ");
-    return ResponseEntity.ok(response);
-}
+    public ResponseEntity<Map<String, String>> storeUserFeedback(Feedback feedback) {
+        Map<String, String> response = new HashMap<>();
+        feedbackRepo.save(feedback);
+        response.put("status", "Feedback submitted ");
+        return ResponseEntity.ok(response);
+    }
+
     public Map<String, Object> fetchStatsForStudent(String studentId) {
         return studentQuizResultsRepo.getStudentQuizStats(studentId);
     }
 
-    public Object fetchCustomTopicsQuestion(List<ChapterIds> chapter_id){
-        JsonNode ques =  customMix.loopJson(chapter_id).get(0);
+    public Object fetchCustomTopicsQuestion(List<ChapterIds> chapter_id) {
+        JsonNode ques = customMix.loopJson(chapter_id).get(0);
         System.out.println(ques.size());
-        return customMix.wrapJsonInDataKey(Collections.singletonList(ques),ques.size());
+        return customMix.wrapJsonInDataKey(Collections.singletonList(ques), ques.size());
     }
 
-    public List<Chapter_list> fetchChapterList(){
+    public List<Chapter_list> fetchChapterList() {
         return chapterListRepo.findAllChaptersWithSuccessStatus();
     }
+
+
+    public ResponseEntity<Map<String, Object>> storeReportedQuestionsData(List<ReportedQuestions> reportedQuestions) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            reportedQuestionRepo.save(reportedQuestions.get(0));
+            response.put("status", "success");
+            response.put("message", "Reported question data saved successfully.");
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } catch (Exception e) {
+            response.put("status", "error");
+            response.put("message", "Failed to save reported question data.");
+            response.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
 }

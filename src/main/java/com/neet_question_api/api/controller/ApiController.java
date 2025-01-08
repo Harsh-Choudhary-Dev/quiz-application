@@ -98,7 +98,10 @@ public class ApiController {
         return service.fetchChapterList();
 
     }
-
+    @PostMapping("/report-questions")
+    public Object storeReportedQuestions(@RequestBody List<ReportedQuestions> reportedQuestions) {
+        return service.storeReportedQuestionsData(reportedQuestions);
+    }
 
     //    -----------------------------------under development------------------------------------------------------------------------------------------------------------
 

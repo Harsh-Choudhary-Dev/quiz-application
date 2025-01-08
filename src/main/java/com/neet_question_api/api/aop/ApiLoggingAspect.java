@@ -63,6 +63,7 @@ public class ApiLoggingAspect {
             "!execution(* com.neet_question_api.api.controller.ApiController.getRecentQuizzes(..)) && " +
             "!execution(* com.neet_question_api.api.controller.ApiController.getChaptersList(..)) && " +
             "!execution(* com.neet_question_api.api.controller.ApiController.storeFeedback(..)) && " +
+            "!execution(* com.neet_question_api.api.controller.ApiController.storeReportedQuestions(..)) && " +
             "!execution(* com.neet_question_api.api.controller.ApiController.getQuizDetails(..)) && " +
             "!execution(* com.neet_question_api.api.controller.ApiController.storeQuizDetails(..)) && " +
             "!execution(* com.neet_question_api.api.controller.ApiController.getStudentId(..)) && " +
