@@ -601,7 +601,10 @@
             }
         }
         
-        localStorage.clear()
+        setTimeout(() => {
+            localStorage.clear();
+    
+        }, 5000); 
         getScores()
 
     </script>

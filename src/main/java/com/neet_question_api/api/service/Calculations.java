@@ -59,9 +59,9 @@ public class Calculations {
         Map<String, Integer> chIdCount = new HashMap<>();
         Map<String, Object> result = new HashMap<>(chapterScores);
         for(AnswerValidation ans : ansDetails){
-            String correct_answer = dynamicTables.fetchAnswerByIdFromTable(ans.getCh_id(),ans.getQuestion_id());
-            int correctAnswer = getCorrectAnswerNumber(correct_answer);
-            if(correctAnswer==(ans.getSelected_ans())){
+            int correct_answer = Integer.parseInt(dynamicTables.fetchAnswerByIdFromTable(ans.getCh_id(),ans.getQuestion_id()));
+//            int correctAnswer = getCorrectAnswerNumber(correct_answer);
+            if(correct_answer==(ans.getSelected_ans())){
                 chapterScores.put(ans.getCh_id(), chapterScores.getOrDefault(ans.getCh_id(), 0) + 1);
             }else {
                 chapterScores.put(ans.getCh_id(), chapterScores.getOrDefault(ans.getCh_id(), 0));

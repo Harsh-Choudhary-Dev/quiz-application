@@ -850,6 +850,7 @@
 
 
         function storeResult(submissionData) {
+            console.log(submissionData)
             fetch('/api/v1/quiz-details', {
                 method: 'POST',
                 headers: {
@@ -894,7 +895,7 @@
                     endTime = Date.now()
                     const time_taken = ((endTime - startTime) / 1000)
                     alert('Test submitted successfully!');
-                    //console.log(data);
+                    console.log(data);
                     const formatted_json = transformQuizData(data, time_taken)
 
 
@@ -941,7 +942,7 @@
 
             setTimeout(() => {
                 errorContainer.remove();
-                //window.location.href = "/dashboard.html"; // Redirect to dashboard after error message disappears
+                window.location.href = "/dashboard.html"; // Redirect to dashboard after error message disappears
             }, 3000);
         }
 

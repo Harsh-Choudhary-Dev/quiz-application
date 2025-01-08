@@ -366,6 +366,7 @@
             } else {
                 endTime = Date.now();
                 document.getElementById("next-btn").innerText = "Submit";
+                console.log(studentResponsesList)
                 validate_answer(studentResponsesList);
             }
         }
@@ -420,8 +421,10 @@
             })
             .then(response => response.json())
             .then(data => {
+                console.log(data)
                 const time_taken = (endTime - startTime) / 1000;
                 const formatted_json = transformQuizData(data, time_taken);
+                console.log(formatted_json)
                 storeResult(formatted_json);
             })
             .catch(error => {
@@ -456,8 +459,10 @@
                 return response.json();
             })
             .then(data => {
+                console.log(data)
+                console.log(submissionData)
                 localStorage.setItem("quiz_id", data["quiz_id"]);
-                window.location.href = "result.html";
+                 window.location.href = "result.html";
             })
             .catch(error => {
                 console.error('Error:', error);
