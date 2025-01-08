@@ -340,12 +340,14 @@
             studentResponsesList.push(response);
 
             setTimeout(() => {
-                if ((index + 1) === correctIndex) {
+                if ((index + 1) === parseInt(correctIndex)) {
                     options[index].classList.add("correct");
+                    console.log(index,correctIndex)
                     score++;
                 } else {
                     options[index].classList.add("wrong");
                     options[correctIndex - 1]?.classList.add("correct");
+                    console.log(index,correctIndex)
                 }
 
                 const progress = ((currentQuestion + 1) / questions.length) * 100;
@@ -498,6 +500,8 @@
                 });
             }
         });
+
+        console.log("hello from harsh")
     </script>
 </body>
 </html>
