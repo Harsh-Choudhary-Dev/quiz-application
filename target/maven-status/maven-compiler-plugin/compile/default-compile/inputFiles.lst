@@ -17,6 +17,7 @@
 /home/harsh/programming/quiz-application/quiz-application/src/main/java/com/neet_question_api/api/modal/PerformanceMatrix.java
 /home/harsh/programming/quiz-application/quiz-application/src/main/java/com/neet_question_api/api/modal/PerformanceSummary.java
 /home/harsh/programming/quiz-application/quiz-application/src/main/java/com/neet_question_api/api/modal/Questions.java
+/home/harsh/programming/quiz-application/quiz-application/src/main/java/com/neet_question_api/api/modal/ReportedQuestions.java
 /home/harsh/programming/quiz-application/quiz-application/src/main/java/com/neet_question_api/api/modal/StudentQuizResults.java
 /home/harsh/programming/quiz-application/quiz-application/src/main/java/com/neet_question_api/api/modal/Students.java
 /home/harsh/programming/quiz-application/quiz-application/src/main/java/com/neet_question_api/api/repo/ApiKeysRepo.java
@@ -28,6 +29,7 @@
 /home/harsh/programming/quiz-application/quiz-application/src/main/java/com/neet_question_api/api/repo/PerformanceRepo.java
 /home/harsh/programming/quiz-application/quiz-application/src/main/java/com/neet_question_api/api/repo/PerformanceSummaryRepo.java
 /home/harsh/programming/quiz-application/quiz-application/src/main/java/com/neet_question_api/api/repo/QuestionRepo.java
+/home/harsh/programming/quiz-application/quiz-application/src/main/java/com/neet_question_api/api/repo/ReportedQuestionRepo.java
 /home/harsh/programming/quiz-application/quiz-application/src/main/java/com/neet_question_api/api/repo/StudentQuizResultsRepo.java
 /home/harsh/programming/quiz-application/quiz-application/src/main/java/com/neet_question_api/api/repo/StudentsRepo.java
 /home/harsh/programming/quiz-application/quiz-application/src/main/java/com/neet_question_api/api/service/Calculations.java
