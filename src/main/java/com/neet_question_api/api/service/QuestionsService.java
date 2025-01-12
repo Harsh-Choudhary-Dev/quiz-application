@@ -82,8 +82,8 @@ public class QuestionsService {
         int totalQuestions = 0;
 
         for (String chapter : chapters.subList(0, 4)) {
-//            int questionNumber = Math.min((int) (Math.random() * 30) + 1, 50 - totalQuestions);
-            int questionNumber = 3;
+            int questionNumber = Math.min((int) (Math.random() * 30) + 1, 50 - totalQuestions);
+//            int questionNumber = 3;
             totalQuestions += questionNumber;
             resultList.add(new ChapterIds(chapter.toLowerCase(), String.valueOf(questionNumber)));
 //            if (totalQuestions >= 50) break;

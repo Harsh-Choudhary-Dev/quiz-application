@@ -257,7 +257,7 @@
             buttons.forEach(button => {
                 button.addEventListener('click', (event) => {
                     const chapterName = event.currentTarget.getAttribute('data-chapter');
-                    localStorage.setItem('quizConfiq', JSON.stringify([{chapter_id: chapterName, question_number: "3"}]));
+                    localStorage.setItem('quizConfiq', JSON.stringify([{chapter_id: chapterName, question_number: "30"}]));
                     console.log(`Stored in session: ${chapterName}`);
                     window.location.href = 'final_quiz_interface.html';
                 });
