@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enhanced Quiz Result Dashboard</title>
+    <title>NEET Quiz Results Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #6366F1;
@@ -18,9 +18,11 @@
             --warning-light: #FEF3C7;
             --error: #EF4444;
             --error-light: #FEE2E2;
-            --background: #F9FAFB;
-            --text: #111827;
-            --text-secondary: #6B7280;
+            --background: #F8FAFC;
+            --surface: #FFFFFF;
+            --text: #0F172A;
+            --text-secondary: #475569;
+            --border: #E2E8F0;
         }
 
         * {
@@ -30,138 +32,127 @@
         }
 
         body {
-            margin: 0;
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #F9FAFB, #E5E7EB);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(135deg, #F8FAFC, #E2E8F0);
             color: var(--text);
             line-height: 1.6;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: 16px;
         }
 
         .dashboard {
-            max-width: 1100px;
+            max-width: 1200px;
             width: 100%;
-            background: white;
+            background: var(--surface);
             border-radius: 24px;
-            padding: 40px;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            padding: 24px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dashboard::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
         }
 
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 40px;
-            padding-bottom: 24px;
-            border-bottom: 1px solid #E5E7EB;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid var(--border);
+            flex-wrap: wrap;
+            gap: 16px;
         }
 
         .header-content h1 {
-            color: var(--text);
-            font-size: 2.5rem;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
             font-weight: 700;
-            margin-bottom: 8px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 4px;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
         }
 
         .header-content p {
             color: var(--text-secondary);
-            font-size: 1.125rem;
+            font-size: clamp(0.875rem, 2vw, 1.125rem);
         }
 
         .timer {
             background: var(--primary-light);
-            padding: 12px 24px;
+            padding: 12px 20px;
             border-radius: 12px;
             color: var(--primary-dark);
             font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: clamp(0.875rem, 2vw, 1rem);
+            white-space: nowrap;
         }
 
         .results-grid {
             display: grid;
-            grid-template-columns: 2fr 1fr;
+            grid-template-columns: 1fr;
             gap: 24px;
-            margin-bottom: 40px;
+            margin-bottom: 24px;
         }
 
         .main-score {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             border-radius: 20px;
-            padding: 40px;
+            padding: clamp(24px, 4vw, 48px);
             color: white;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(99, 102, 241, 0.25);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
         }
 
         .score-circle {
-            width: 160px;
-            height: 160px;
+            width: clamp(120px, 30vw, 200px);
+            height: clamp(120px, 30vw, 200px);
             background: rgba(255, 255, 255, 0.1);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3rem;
+            font-size: clamp(2rem, 6vw, 4rem);
             font-weight: 700;
             margin-bottom: 24px;
+            border: clamp(6px, 1.5vw, 12px) solid rgba(255, 255, 255, 0.2);
             position: relative;
-        }
-        .chart-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 20px;
-            flex: 1;
-            background: white;
-            border-radius: 20px;
-            padding: 32px;
-            margin-top: 40px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 600px;
-        }
-        
-        #scoreBreakdownChart,
-        #topicBreakdownChart {
-            width: 100%;
-            height: auto;
-            max-height: 400px;
-        }
-
-        .score-circle::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            border-radius: 50%;
-            border: 8px solid rgba(255, 255, 255, 0.2);
-            border-top-color: white;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
         }
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
         }
 
         .stat-card {
-            background: white;
+            background: var(--surface);
             border-radius: 16px;
-            padding: 24px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s ease;
+            padding: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border);
+            transition: transform 0.3s ease;
         }
 
         .stat-card:hover {
@@ -170,8 +161,8 @@
 
         .stat-title {
             color: var(--text-secondary);
-            font-size: 0.875rem;
-            font-weight: 500;
+            font-size: clamp(0.875rem, 2vw, 1rem);
+            font-weight: 600;
             margin-bottom: 12px;
             display: flex;
             align-items: center;
@@ -179,21 +170,45 @@
         }
 
         .stat-value {
-            font-size: 2rem;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
             font-weight: 700;
             color: var(--text);
         }
 
-        .chart-header {
+        /* Updated charts-wrapper and chart-container styles */
+        .charts-wrapper {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            margin: 24px 0;
+        }
+
+        .chart-container {
+            background: var(--surface);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border);
+            min-height: 350px;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
+            flex-direction: column;
+        }
+
+        .chart-header {
+            margin-bottom: 16px;
         }
 
         .chart-header h2 {
-            font-size: 1.25rem;
-            font-weight: 600;
+            font-size: clamp(1rem, 3vw, 1.25rem);
+            color: var(--text);
+            font-weight: 700;
+        }
+
+        .chart-canvas-container {
+            flex: 1;
+            position: relative;
+            min-height: 300px;
+            width: 100%;
         }
 
         .feedback {
@@ -201,204 +216,163 @@
             border-radius: 12px;
             font-weight: 500;
             text-align: center;
-            margin: 32px 0;
+            margin: 24px 0;
+            font-size: clamp(0.875rem, 2vw, 1.125rem);
+            transition: all 0.3s ease;
         }
 
         .feedback.success {
             background: var(--success-light);
             color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.2);
         }
 
         .feedback.warning {
             background: var(--warning-light);
             color: var(--warning);
+            border: 1px solid rgba(245, 158, 11, 0.2);
         }
 
         .action-buttons {
-            display: flex;
+            display: grid;
+            grid-template-columns: 1fr;
             gap: 16px;
-            margin-top: 32px;
+            margin-top: 24px;
         }
 
         .btn {
-            padding: 12px 24px;
+            padding: 14px 24px;
             border-radius: 12px;
             font-weight: 600;
-            font-size: 0.875rem;
+            font-size: clamp(0.875rem, 2vw, 1rem);
             text-decoration: none;
-            display: inline-flex;
+            display: flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
-            transition: background-color 0.3s ease, transform 0.2s ease;
+            transition: all 0.3s ease;
+            cursor: pointer;
         }
 
         .btn-primary {
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
+            border: none;
+            box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3);
         }
 
         .btn-primary:hover {
-            background: var(--primary-dark);
-            transform: scale(1.05);
+            transform: translateY(-2px);
+            box-shadow: 0 20px 25px -5px rgba(99, 102, 241, 0.4);
         }
 
         .btn-secondary {
             background: var(--primary-light);
             color: var(--primary);
+            border: 2px solid var(--primary);
         }
 
         .btn-secondary:hover {
-            background: #E0E7FF;
-            transform: scale(1.05);
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.1);
         }
 
-        @media (max-width: 1200px) {
+        @media (min-width: 768px) {
             .dashboard {
-                padding: 24px;
-                margin: 15px;
+                padding: 32px;
+                border-radius: 32px;
             }
 
             .results-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1.5fr 1fr;
             }
 
-            .header-content h1 {
-                font-size: 2rem;
-            }
-
-            .timer {
-                padding: 8px 16px;
-                font-size: 0.9rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .dashboard {
-                padding: 16px;
-                margin: 10px;
-                border-radius: 16px;
-            }
-
-            header {
-                flex-direction: column;
-                gap: 16px;
-                align-items: flex-start;
-                margin-bottom: 24px;
-                padding-bottom: 16px;
+            .action-buttons {
+                grid-template-columns: repeat(2, 1fr);
             }
 
             .charts-wrapper {
-                flex-direction: column;
+                grid-template-columns: repeat(2, 1fr);
             }
 
             .chart-container {
-                min-width: 100%;
-                padding: 16px;
+                min-height: 400px;
             }
 
-            .stats-grid {
-                grid-template-columns: 1fr;
-                gap: 16px;
-            }
-
-            .stat-card {
-                padding: 16px;
-            }
-
-            .stat-value {
-                font-size: 1.5rem;
-            }
-
-            .score-circle {
-                width: 100px;
-                height: 100px;
-                font-size: 1.75rem;
+            .chart-canvas-container {
+                min-height: 350px;
             }
         }
 
-        @media (max-width: 480px) {
-            .dashboard {
-                padding: 12px;
-                margin: 8px;
-            }
-
-            .header-content h1 {
-                font-size: 1.5rem;
-            }
-
-            .header-content p {
-                font-size: 0.875rem;
-            }
-
-            .chart-container {
-                padding: 12px;
-            }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
 
-        .charts-wrapper {
-            display: flex;
-            gap: 20px;
-            width: 100%;
-            flex-wrap: wrap;
+        .animate-pulse {
+            animation: pulse 2s infinite;
         }
 
-        .chart-container {
-            flex: 1;
-            min-width: 300px;
-            background: white;
-            border-radius: 20px;
-            padding: 24px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        @media (max-width: 768px) {
-            .charts-wrapper {
-                flex-direction: column;
-            }
-            
-            .chart-container {
-                width: 100%;
-                margin: 10px 0;
-            }
+        .slide-in {
+            animation: slideIn 0.5s ease-out forwards;
         }
+
+        @media (max-width: 600px) {
+                .chart-container{
+                    padding: 0;
+                }
+                body{
+                    padding: 0%;
+                }
+            }
+
+
+
     </style>
 </head>
 <body>
-    <div class="dashboard">
+    <div class="dashboard slide-in">
         <header>
             <div class="header-content">
-                <h1>Quiz Results</h1>
-                <p>Great job completing the quiz!</p>
+                <h1>NEET Quiz Results</h1>
+                <p>Your performance analysis and detailed breakdown</p>
             </div>
             <div class="timer">
-                Time Taken: <span id="completionTime">12:30</span>
+                Time Taken: <span id="completionTime">00:00</span>
             </div>
         </header>
 
         <div class="results-grid">
             <div class="main-score">
-                <div class="score-circle">
+                <div class="score-circle animate-pulse">
                     <span class="score">0%</span>
                 </div>
-                <h2 style="color: rgba(255,255,255,0.9); margin-bottom: 8px;">Quiz Performance</h2>
-                <p style="color: rgba(255,255,255,0.7)">You answered <strong class="correct-ans"></strong> questions correctly out of <strong class="total-ques"></strong>.</p>
+                <h2>Overall Performance</h2>
+                <p>You scored <strong class="correct-ans">0</strong> out of <strong class="total-ques">0</strong> questions</p>
             </div>
 
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-title">✅ Correct</div>
-                    <div class="stat-value correct-ans"></div>
+                    <div class="stat-title">✅ Correct Answers</div>
+                    <div class="stat-value correct-ans">0</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-title">❌ Incorrect</div>
-                    <div class="stat-value wrong-ques"></div>
+                    <div class="stat-title">❌ Incorrect Answers</div>
+                    <div class="stat-value wrong-ques">0</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-title">📝 Total</div>
-                    <div class="stat-value total-ques"></div>
+                    <div class="stat-title">📚 Total Questions</div>
+                    <div class="stat-value total-ques">0</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-title">⚡ Accuracy</div>
+                    <div class="stat-title">🎯 Accuracy Rate</div>
                     <div class="stat-value accuracy">0%</div>
                 </div>
             </div>
@@ -407,50 +381,78 @@
         <div class="charts-wrapper">
             <div class="chart-container">
                 <div class="chart-header">
-                    <h2>Performance Breakdown</h2>
+                    <h2>Performance Distribution</h2>
                 </div>
-                <div style="position: relative; height: 300px;">
+                <div class="chart-canvas-container">
                     <canvas id="scoreBreakdownChart"></canvas>
                 </div>
             </div>
-            <!-- <div class="chart-container">
+            <div class="chart-container">
                 <div class="chart-header">
-                    <h2>Question Breakdown by Topic</h2>
+                    <h2>Subject-wise Analysis</h2>
                 </div>
-                <div style="position: relative; height: 300px;">
-                    <canvas id="topicBreakdownChart"></canvas>
+                <div class="chart-canvas-container">
+                    <canvas id="stackedBarChart"></canvas>
                 </div>
-            </div> -->
+            </div>
         </div>
 
         <div class="feedback"></div>
 
         <div class="action-buttons">
-            <a href="dashboard.html" class="btn btn-primary" onclick="localStorage.clear()">🔄 Dashboard</a>
-            <!-- <a href="#" class="btn btn-secondary">📋 Review Answers</a> -->
-            <a href="#" class="btn btn-secondary">📤 Share Results</a>
+            <a href="dashboard.html" class="btn btn-primary" onclick="localStorage.clear()">
+                🔄 Back to Dashboard
+            </a>
+            <a href="#" class="btn btn-secondary">
+                📤 Share Results
+            </a>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         const scoreBreakdownCtx = document.getElementById('scoreBreakdownChart').getContext('2d');
+        const stackedBarCtx = document.getElementById('stackedBarChart').getContext('2d');
         const correct_ans_ele = document.querySelectorAll(".correct-ans");
         const total_ques_ele = document.querySelectorAll(".total-ques");
-        //const score = sessionStorage.getItem('score') || 0;  // Default for demo
-        //const total_questions = sessionStorage.getItem('total_questions') || 0;  // Default for demo
         const feedback = document.querySelector(".feedback");
-        //const completionTime = document.getElementById("completionTime").innerText = Math.round(sessionStorage.getItem("totalTime")) + " seconds"
-        //const wrong_ans = total_questions - score;
+        let scoreBreakdownChart;
+        let stackedBarChart;
+
+        // Add Chart.js default configuration for better responsiveness
+        Chart.defaults.maintainAspectRatio = false;
+        Chart.defaults.responsive = true;
+
         const message = [
-            "Keep practicing! You're making progress. Focus on the topics you found challenging and you'll improve!",
-            "Outstanding performance! Your hard work and preparation really showed in these results! 🌟"
+            "Keep going! Focus on understanding core concepts and practice regularly. Your dedication will lead to improvement! 💪",
+            "Outstanding work! Your thorough preparation shows in these results. Keep up this excellent performance! 🌟"
         ];
 
-        function displayScore(score,total_questions,wrong_ans) {
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+        }
+
+        function displayScore(score, total_questions, wrong_ans) {
             document.querySelectorAll(".wrong-ques").forEach(el => el.innerText = wrong_ans);
-            const correct_ans = total_questions-wrong_ans
-            document.querySelector(".score").innerText = parseInt(score) + "%";
+            const correct_ans = total_questions - wrong_ans;
+            
+            const scoreElement = document.querySelector(".score");
+            const duration = 1500;
+            const steps = 60;
+            const increment = parseInt(score) / steps;
+            let currentScore = 0;
+            
+            const timer = setInterval(() => {
+                currentScore += increment;
+                if (currentScore >= score) {
+                    currentScore = score;
+                    clearInterval(timer);
+                }
+                scoreElement.innerText = `${Math.round(currentScore)}%`;
+            }, duration / steps);
+
             document.querySelector(".accuracy").innerText = parseInt(score) + "%";
             
             total_ques_ele.forEach(el => el.innerText = total_questions);
@@ -467,145 +469,244 @@
                 feedback.classList.remove('warning');
                 feedback.innerText = message[1];
             }
+
+            createScoreBreakdownChart(correct_ans, wrong_ans);
         }
 
- function scoreBreakdownChart(score, wrong_ans){
-    const scoreBreakdownChart = new Chart(scoreBreakdownCtx, {
-        type: 'doughnut',
-        data: {
-            labels: ['Correct Answers', 'Incorrect Answers'],
-            datasets: [{
-                data: [score, wrong_ans],
-                backgroundColor: [
-                    '#10B981',
-                    '#EF4444'
-                ],
-                borderColor: 'white',
-                borderWidth: 2,
-                hoverOffset: 10
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            animations: {
-                tension: {
-                    duration: 1000,
-                    easing: 'easeInOutQuad',
-                    from: 1,
-                    to: 0,
-                    loop: true
-                }
-            },
-            plugins: {
-                legend: {
-                    position: 'bottom',
-                    labels: {
-                        padding: 10,
-                        color: '#111827',
-                        font: {
-                            family: 'Inter',
-                            size: 17
-                        }
-                    }
+        function createScoreBreakdownChart(correct_ans, wrong_ans) {
+            if (scoreBreakdownChart) {
+                scoreBreakdownChart.destroy();
+            }
+
+            const config = {
+                type: 'doughnut',
+                data: {
+                    labels: ['Correct Answers', 'Incorrect Answers'],
+                    datasets: [{
+                        data: [correct_ans, wrong_ans],
+                        backgroundColor: [
+                            '#10B981',
+                            '#EF4444'
+                        ],
+                        borderColor: 'white',
+                        borderWidth: 2,
+                        hoverOffset: 15,
+                        borderRadius: 5
+                    }]
                 },
-                tooltip: {
-                    callbacks: {
-                        label: function(tooltipItem) {
-                            return tooltipItem.label + ': ' + tooltipItem.raw;
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                font: {
+                                    family: 'Plus Jakarta Sans',
+                                    size: 14,
+                                    weight: '600'
+                                },
+                                boxWidth: 16
+                            }
+                        }
+                    },
+                    layout: {
+                        padding: 20
+                    },
+                    cutout: '70%'
+                }
+            };
+            scoreBreakdownChart = new Chart(scoreBreakdownCtx, config);
+        }
+
+        function createStackedBarChart(data) {
+            if (stackedBarChart) {
+                stackedBarChart.destroy();
+            }
+
+            if (!data || !data.chapter_list || !data.correct || !data.incorrect) {
+                console.error('Invalid data for stacked bar chart');
+                return;
+            }
+
+            const config = {
+                type: 'bar',
+                data: {
+                    labels: data.chapter_list,
+                    datasets: [
+                        {
+                            label: 'Correct',
+                            data: data.correct,
+                            backgroundColor: '#10B981',
+                            borderRadius: 6,
+                        },
+                        {
+                            label: 'Incorrect',
+                            data: data.incorrect,
+                            backgroundColor: '#EF4444',
+                            borderRadius: 6,
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            stacked: true,
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                font: {
+                                    family: 'Plus Jakarta Sans',
+                                    size: 12,
+                                    weight: '500'
+                                },
+                                maxRotation: 45,
+                                minRotation: 45
+                            }
+                        },
+                        y: {
+                            stacked: true,
+                            beginAtZero: true,
+                            ticks: {
+                                font: {
+                                    family: 'Plus Jakarta Sans',
+                                    size: 12,
+                                    weight: '500'
+                                },
+                                stepSize: 1
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    family: 'Plus Jakarta Sans',
+                                    size: 14,
+                                    weight: '600'
+                                },
+                                padding: 20,
+                                boxWidth: 16
+                            }
+                        }
+                    },
+                    layout: {
+                        padding: {
+                            left: 10,
+                            right: 10,
+                            top: 20,
+                            bottom: 20
                         }
                     }
                 }
-            },
-            cutout: '50%'
+            };
+            stackedBarChart = new Chart(stackedBarCtx, config);
         }
-    });
- }
-
- function topicBreakdownChart(labels, data) {
-    const generateColors = (count) => {
-        // Generate `count` random colors
-        return Array.from({ length: count }, () =>
-            `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')}`
-        );
-    };
-
-    const topicBreakdownCtx = document.getElementById('topicBreakdownChart').getContext('2d');
-    const topicBreakdownChart = new Chart(topicBreakdownCtx, {
-        type: 'doughnut',
-        data: {
-            labels: labels,
-            datasets: [{
-                data: data,
-                backgroundColor: generateColors(data.length), // Generate colors dynamically
-                borderColor: 'white',
-                borderWidth: 2
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'top',
-                }
-            }
-        }
-    });
-}
-
-        
-        
-        function convertToList(inputString) {
-            if (typeof inputString !== "string") {
-                throw new Error("Input must be a string");
-            }
-            return inputString.split(",");
-        }
-        
 
         async function getScores() {
             const quiz_id = localStorage.getItem('quiz_id');
-            console.log(quiz_id);
-        
+            if (!quiz_id) {
+                console.error('No quiz_id found in localStorage');
+                return;
+            }
+
             const url = `/api/v1/quiz-details?quiz_id=${quiz_id}`;
-       
-        
+            
             try {
                 const response = await fetch(url, {
                     method: 'GET',
                     headers: {
-                        'X-API-KEY': 'neet_QdrUprUid6I7h7HTvdfOJHib0aSNOy7iUyLYYdFaPcc', // Include the API key here
-                        'Accept': 'application/json'      // Optional, ensures JSON response
+                        'X-API-KEY': 'neet_QdrUprUid6I7h7HTvdfOJHib0aSNOy7iUyLYYdFaPcc',
+                        'Accept': 'application/json'
                     }
                 });
-        
+
                 if (!response.ok) {
                     throw new Error(`Response status: ${response.status}`);
                 }
-        
+
                 const json = await response.json();
-                console.log(json);
-                const wrong_ans = json[0]["total_questions"]-json[0]["total_marks"]
-                const total_questions = json[0]["total_questions"]
-                const correct_ans = total_questions-wrong_ans
-                const score = json[0]["score"]
-                displayScore(score,total_questions,wrong_ans)
-                const chapterlist = convertToList(json[0]["chapter_ids"])
-                //topicBreakdownChart(chapterlist,[34,45,56,67])
-                const completionTime = document.getElementById("completionTime").innerText = Math.round(json[0]["time_taken"]) + " seconds"
-                scoreBreakdownChart(correct_ans, wrong_ans)
+                if (!json || !json[0]) {
+                    throw new Error('Invalid response data');
+                }
+
+                const wrong_ans = json[0].total_questions - json[0].total_marks;
+                const total_questions = json[0].total_questions;
+                const score = json[0].score;
+                
+                displayScore(score, total_questions, wrong_ans);
+                document.getElementById("completionTime").innerText = formatTime(Math.round(json[0].time_taken));
+                
                 return json;
             } catch (error) {
-                console.error(error.message);
+                console.error('Error fetching quiz details:', error);
+                feedback.classList.add('warning');
+                feedback.innerText = "Unable to load quiz results. Please try again later.";
             }
         }
-        
-        setTimeout(() => {
-            localStorage.clear();
-    
-        }, 5000); 
-        getScores()
+
+        function getChaptersWithCorrectIncorrectAnswers(data) {
+            if (!data) {
+                console.error('No chapter analytics data provided');
+                return null;
+            }
+
+            const result = {
+                chapter_list: [],
+                correct: [],
+                incorrect: []
+            };
+
+            for (const chapter in data.chapterwise_total_question) {
+                const totalQuestions = data.chapterwise_total_question[chapter];
+                const correct = data.correct_question_answered[chapter] || 0;
+                result.chapter_list.push(chapter);
+                result.correct.push(correct);
+                result.incorrect.push(totalQuestions - correct);
+            }
+
+            return result;
+        }
+
+        let resizeTimer;
+
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(function() {
+                const chapterwise_analytics = getChaptersWithCorrectIncorrectAnswers(
+                    JSON.parse(localStorage.getItem("chapterwise_analytics"))
+                );
+                if (chapterwise_analytics) {
+                    createStackedBarChart(chapterwise_analytics);
+                }
+            }, 250);
+        });
+
+        document.addEventListener("DOMContentLoaded", async function() {
+            try {
+                await getScores();
+                
+                const chapterwise_analytics = getChaptersWithCorrectIncorrectAnswers(
+                    JSON.parse(localStorage.getItem("chapterwise_analytics"))
+                );
+                if (chapterwise_analytics) {
+                    createStackedBarChart(chapterwise_analytics);
+                }
+            } catch (error) {
+                console.error('Error initializing dashboard:', error);
+                feedback.classList.add('warning');
+                feedback.innerText = "Unable to initialize dashboard. Please refresh the page.";
+            }
+        });
+
 
     </script>
 </body>

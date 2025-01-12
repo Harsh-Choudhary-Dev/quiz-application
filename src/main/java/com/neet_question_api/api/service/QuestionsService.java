@@ -54,6 +54,9 @@ public class QuestionsService {
     private Chapter_ids chapter_ids;
 
     @Autowired
+    private StudentQuizQuestionHistoryRepo studentQuizQuestionHistoryRepo;
+
+    @Autowired
     private ReportedQuestionRepo reportedQuestionRepo;
 
     @Autowired
@@ -70,12 +73,7 @@ public class QuestionsService {
 
 
     public Object fetchRandomDataFromTable() {
-//        List<String> chapters = Arrays.asList(
-//                "CH_1", "CH_2", "CH_3", "CH_4", "CH_5",
-//                "CH_7", "CH_8", "CH_9", "CH_10", "CH_11",
-//                "CH_12", "CH_13", "CH_14", "CH_15", "CH_16",
-//                "CH_17", "CH_18", "CH_19", "CH_20", "CH_21"
-//        );
+
 
         List<String> chapters = chapter_ids.findRandomChapterIds();
         System.out.println(chapters);
@@ -84,10 +82,11 @@ public class QuestionsService {
         int totalQuestions = 0;
 
         for (String chapter : chapters.subList(0, 4)) {
-            int questionNumber = Math.min((int) (Math.random() * 30) + 1, 50 - totalQuestions);
+//            int questionNumber = Math.min((int) (Math.random() * 30) + 1, 50 - totalQuestions);
+            int questionNumber = 3;
             totalQuestions += questionNumber;
             resultList.add(new ChapterIds(chapter.toLowerCase(), String.valueOf(questionNumber)));
-            if (totalQuestions >= 50) break;
+//            if (totalQuestions >= 50) break;
         }
         return fetchCustomMixQuestions(resultList);
     }
@@ -151,12 +150,10 @@ public class QuestionsService {
             String chapterId = entry.getKey();
             Integer correctAnswer = entry.getValue();
             Integer questionCount = chapterwiseTotalQuestion.get(chapterId);
-//            System.out.println("Chapter ID: " + chapterId + ", Correct Answers: " + correctAnswer + " ,question count: "+ questionCount);
             performanceMatrix.setScore(correctAnswer);
             performanceMatrix.setTotal_questions(questionCount);
             performanceMatrix.setStudent_id((String) record.get("student_id"));
             performanceMatrix.setChapter_id(chapterId);
-//            System.out.println(performanceMatrix);
             performanceRepo.insertChapterPerformance(performanceMatrix);
         }
         return record;
@@ -193,7 +190,6 @@ public class QuestionsService {
         String quiz_id = uniqueIds.generateUserId();
         Map<String, String> response = new HashMap<>();
         studentQuizResults.setQuiz_id(quiz_id);
-//        System.out.println(studentQuizResults);
         studentQuizResultsRepo.save(studentQuizResults);
         response.put("status", "Quiz details saved");
         response.put("quiz_id", quiz_id);
@@ -253,6 +249,14 @@ public class QuestionsService {
             response.put("error", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
+    }
+
+    public ResponseEntity<Map<String, Object>> maintinStudentHistory(List<StudentQuizQuestionHistory> studentQuizQuestionHistoryList) {
+        studentQuizQuestionHistoryRepo.saveAll(studentQuizQuestionHistoryList);
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "Data stored successfully");
+        response.put("status", "success");
+        return ResponseEntity.ok(response);
     }
 
 }

@@ -432,6 +432,48 @@
                 font-size: 1.5rem;
             }
         }
+
+        /* Update existing styles for better responsiveness */
+        @media (max-width: 480px) {
+            .hero-text h1 {
+                font-size: 2rem; /* Smaller font size for the heading */
+            }
+
+            .hero-text p {
+                font-size: 0.9rem; /* Smaller font size for the paragraph */
+            }
+
+            .btn {
+                padding: 10px 20px; /* Adjust button padding */
+                font-size: 0.9rem; /* Smaller font size for buttons */
+            }
+
+            .exam-stats {
+                flex-direction: column; /* Stack stats vertically */
+                align-items: center; /* Center align stats */
+            }
+
+            .stat {
+                margin-bottom: 20px; /* Add space between stats */
+            }
+
+            .features {
+                grid-template-columns: 1fr; /* Stack feature cards vertically */
+            }
+
+            .feature-card {
+                margin-bottom: 20px; /* Add space between feature cards */
+            }
+
+            .trust-badges {
+                flex-direction: column; /* Stack badges vertically */
+                align-items: center; /* Center align badges */
+            }
+
+            .badge {
+                margin-bottom: 10px; /* Add space between badges */
+            }
+        }
     </style>
 </head>
 <body>
@@ -439,7 +481,7 @@
     <div class="decorative-element decorative-2"></div>
 
     <header class="header">
-        <nav class="container nav">
+        <nav class="container nav" style="margin-top: 2vh;">
             <div class="logo">
                 <i class="fas fa-flask"></i>
                 NEET Biology Mastery

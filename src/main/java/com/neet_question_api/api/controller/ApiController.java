@@ -23,11 +23,6 @@ public class ApiController {
     public Object getCustomTopicsQuestion(@RequestBody List<ChapterIds> chapter_id) {
         return service.fetchCustomTopicsQuestion(chapter_id);
     }
-    @GetMapping("/")
-    public String home() {
-        System.out.println("hello home");
-        return "/home.html";
-    }
 
     @GetMapping("/random-mix")
     public Object getRandomQuestions() {
@@ -105,6 +100,11 @@ public class ApiController {
     @PostMapping("/report-questions")
     public Object storeReportedQuestions(@RequestBody List<ReportedQuestions> reportedQuestions) {
         return service.storeReportedQuestionsData(reportedQuestions);
+    }
+
+    @PostMapping("/history")
+    public Object storeStudentQuizHsitory(@RequestBody List<StudentQuizQuestionHistory> studentQuizQuestionHistories){
+        return service.maintinStudentHistory(studentQuizQuestionHistories);
     }
 
     //    -----------------------------------under development------------------------------------------------------------------------------------------------------------

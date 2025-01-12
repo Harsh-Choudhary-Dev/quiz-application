@@ -15,7 +15,7 @@ public interface StudentQuizResultsRepo extends JpaRepository<StudentQuizResults
     @Query(value = "SELECT * FROM student_quiz_results WHERE quiz_id = :quizId", nativeQuery = true)
     List<StudentQuizResults> findByQuizId(@Param("quizId") String quizId);
 
-    @Query(value = "SELECT * FROM student_quiz_results WHERE student_id = :studentId ORDER BY score DESC LIMIT 7;", nativeQuery = true)
+    @Query(value = "SELECT * FROM student_quiz_results WHERE student_id = :studentId ORDER BY created_at DESC LIMIT 7;", nativeQuery = true)
     List<StudentQuizResults> findTop5ByStudentId(@Param("studentId") String studentId);
 
     @Query(value = """

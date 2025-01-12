@@ -218,6 +218,11 @@
                 font-size: 1.1rem;   /* Increased font size for buttons */
             }
         }
+
+ 
+
+
+
     </style>
 </head>
 <body>
@@ -411,6 +416,7 @@
         });
 
         function validate_answer(submissionData) {
+            // console.log(submissionData)
             fetch('/api/v1/validate-answer', {
                 method: 'POST',
                 headers: {
@@ -422,6 +428,7 @@
             .then(response => response.json())
             .then(data => {
                 console.log(data)
+                localStorage.setItem("chapterwise_analytics",JSON.stringify(data))
                 const time_taken = (endTime - startTime) / 1000;
                 const formatted_json = transformQuizData(data, time_taken);
                 console.log(formatted_json)
@@ -462,7 +469,7 @@
                 console.log(data)
                 console.log(submissionData)
                 localStorage.setItem("quiz_id", data["quiz_id"]);
-                 window.location.href = "result.html";
+                window.location.href = "result.html";
             })
             .catch(error => {
                 console.error('Error:', error);
